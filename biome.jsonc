@@ -1,0 +1,49 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+	"organizeImports": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"style": {
+				"noNonNullAssertion": "off"
+			},
+			"nursery": {
+				// https://biomejs.dev/linter/rules/use-sorted-classes/
+				// This rule sorts tailwindCSS classes.
+				"useSortedClasses": {
+					"level": "info",
+					"fix": "safe", // May need to turn this down to safe if it's causing problems.
+					"options": {
+						"attributes": ["class", "className", "classList"],
+						"functions": ["clsx", "cva", "tw", "cn"]
+					}
+				}
+			},
+			"suspicious": {
+				"noExplicitAny": "off"
+			},
+			"a11y": {
+				// TODO: should probably re-enable these, but turning
+				// off for now to allow rapid iteration on the UI.
+				"noSvgWithoutTitle": "off",
+				"useKeyWithClickEvents": "off"
+			},
+			"complexity": {
+				// Disabling this rule because it's not working as expected.
+				// It doesn't account for access modifiers. Ex. if the inherited
+				// constructor is private, but the child constructor is public,
+				// then it's not useless.
+				"noUselessConstructor": "off"
+			},
+			"correctness": {
+				"noUnusedImports": "info"
+			}
+		}
+	},
+	"files": {
+		"ignore": ["node_modules", ".vinxi", ".output", "src/assets"]
+	}
+}

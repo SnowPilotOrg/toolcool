@@ -1,0 +1,35 @@
+{
+	"name": "tool-cool",
+	"module": "index.ts",
+	"version": "0.1.0",
+	"description": "Zod schemas to simplify tool calls for popular SaaS APIs",
+	"keywords": [
+		"zod",
+		"schema",
+		"typescript",
+		"hubspot",
+		"saas",
+		"api",
+		"tool call",
+		"openai"
+	],
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"build": "tsc",
+		"test": "bun test",
+		"format": "biome format --write .",
+		"lint": "biome check --write ."
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"@types/bun": "latest",
+		"@types/node": "^22.9.0"
+	},
+	"peerDependencies": {
+		"typescript": "^5.6.3"
+	},
+	"dependencies": {
+		"zod": "^3.23.8"
+	}
+}
