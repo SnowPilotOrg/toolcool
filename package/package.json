@@ -16,7 +16,9 @@
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"scripts": {
-		"build": "bun build ./src/index.ts --outdir ./dist && tsc",
+		"build": "rm -rf ./dist && bun build ./src/index.ts --outdir ./dist && tsc --emitDeclarationOnly --declaration --outDir ./dist",
+		"typecheck": "tsc --noEmit",
+		"clean": "rm -rf ./dist",
 		"test": "bun test",
 		"format": "biome format --write .",
 		"lint": "biome check --write .",
