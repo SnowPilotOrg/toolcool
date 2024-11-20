@@ -24,14 +24,16 @@ return chatCompletion.choices[0].message;`;
 
 function Home() {
 	return (
-		<Background className="flex justify-center items-center">
+		<Background className="flex justify-center p-6 sm:pt-24">
 			<div className="flex flex-col gap-12 w-full max-w-2xl">
 				<Banner />
 				<div className="flex flex-col gap-4">
 					<ChatWindow />
 					<Selector />
 				</div>
-				<CodeBlock code={code} />
+				<div className="pb-12">
+					<CodeBlock code={code} />
+				</div>
 			</div>
 		</Background>
 	);

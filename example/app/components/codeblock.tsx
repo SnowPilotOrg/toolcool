@@ -11,7 +11,7 @@ export const CodeBlock = ({
 				<CopyBlock
 					text={code}
 					language={language}
-					showLineNumbers={true}
+					showLineNumbers={false}
 					wrapLongLines={true}
 				/>
 			</CardBody>

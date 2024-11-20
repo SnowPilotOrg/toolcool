@@ -6,7 +6,7 @@ export const Background = ({
 	className,
 }: Readonly<{ children: ReactNode; className?: string }>) => {
 	return (
-		<div className={`relative h-screen w-screen bg-white ${className}`}>
+		<div className="relative h-screen w-screen bg-white">
 			<div
 				className={cn(
 					"absolute h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] ",

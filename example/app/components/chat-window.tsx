@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import { Card, CardBody } from "@nextui-org/card";
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
@@ -6,8 +6,6 @@ import { useState } from "react";
 import { toolChat } from "../server/chat";
 import type { MessageType } from "../lib/types";
 import { Message } from "./message";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { ArrowUpIcon } from "lucide-react";
 
 export const ChatWindow = () => {
