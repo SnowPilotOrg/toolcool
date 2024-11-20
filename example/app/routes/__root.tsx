@@ -6,7 +6,7 @@ import {
 import { Meta, Scripts } from "@tanstack/start";
 import type { ReactNode } from "react";
 import { NextUIProvider } from "@nextui-org/react";
-import "../main.css";
+import "~/main.css";
 
 export const Route = createRootRoute({
 	head: () => ({
@@ -22,6 +22,7 @@ export const Route = createRootRoute({
 				title: "TanStack Start Starter",
 			},
 		],
+
 		// links: [{ rel: "stylesheet", href: appCss }],
 	}),
 	component: RootComponent,

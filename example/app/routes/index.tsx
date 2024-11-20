@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { Background } from "../components/background";
-import { ChatWindow } from "../components/chat-window";
-import { Selector } from "../components/selector";
-import { CodeBlock } from "../components/codeblock";
-import { Banner } from "../components/banner";
+import { Background } from "~/components/background";
+import { ChatWindow } from "~/components/chat-window";
+import { Selector } from "~/components/selector";
+import { CodeBlock } from "~/components/codeblock";
+import { Banner } from "~/components/banner";
 
 export const Route = createFileRoute("/")({
 	component: Home,

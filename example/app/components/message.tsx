@@ -1,5 +1,5 @@
-import type { MessageType } from "../lib/types";
-import { LoadingDots } from "./loading-dots";
+import type { MessageType } from "~/lib/types";
+import { LoadingDots } from "~/components/loading-dots";
 
 export const Message = ({ role, content, isLoading = false }: MessageType) => {
 	return (

@@ -3,9 +3,9 @@ import { ScrollShadow } from "@nextui-org/scroll-shadow";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { useState } from "react";
-import { toolChat } from "../server/chat";
-import type { MessageType } from "../lib/types";
-import { Message } from "./message";
+import { toolChat } from "~/server/chat";
+import type { MessageType } from "~/lib/types";
+import { Message } from "~/components/message";
 import { ArrowUpIcon } from "lucide-react";
 
 export const ChatWindow = () => {
