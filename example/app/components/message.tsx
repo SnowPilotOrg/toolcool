@@ -1,17 +1,17 @@
 import type { MessageType } from "../lib/types";
 import { LoadingDots } from "./loading-dots";
 
-export const Message = ({ role, content, isLoading }: MessageType) => {
+export const Message = ({ role, content, isLoading = false }: MessageType) => {
 	return (
 		<div
 			className={`flex ${role === "user" ? "justify-end" : "justify-start"}`}
 		>
 			<div
-				className={`px-4 py-2 rounded-lg max-w-[80%] ${
+				className={`px-4 py-2 ${
 					role === "user"
-						? "bg-primary text-primary-foreground"
-						: "bg-default-100"
-				}`}
+						? "rounded-l-lg rounded-tr-lg bg-primary text-primary-foreground"
+						: "rounded-r-lg rounded-tl-lg bg-default-100"
+				} max-w-[80%] text-sm`}
 			>
 				{isLoading ? <LoadingDots /> : content}
 			</div>
