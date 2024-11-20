@@ -5,6 +5,8 @@ import {
 } from "@tanstack/react-router";
 import { Meta, Scripts } from "@tanstack/start";
 import type { ReactNode } from "react";
+import { NextUIProvider } from "@nextui-org/react";
+import "../styles/tailwind.css";
 
 export const Route = createRootRoute({
 	head: () => ({
@@ -20,6 +22,7 @@ export const Route = createRootRoute({
 				title: "TanStack Start Starter",
 			},
 		],
+		// links: [{ rel: "stylesheet", href: appCss }],
 	}),
 	component: RootComponent,
 });
@@ -27,14 +30,16 @@ export const Route = createRootRoute({
 function RootComponent() {
 	return (
 		<RootDocument>
-			<Outlet />
+			<NextUIProvider>
+				<Outlet />
+			</NextUIProvider>
 		</RootDocument>
 	);
 }
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 	return (
-		<html>
+		<html lang="en">
 			<head>
 				<Meta />
 			</head>
