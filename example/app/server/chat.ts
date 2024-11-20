@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/start'
 import OpenAI from 'openai';
 import { z } from 'zod';
-import { messagesSchema } from '../lib/types';
+import { openAiMessagesSchema } from '../lib/types';
 
 async function makeOpenAiClient(): Promise<OpenAI> {
 	return new OpenAI({
@@ -11,7 +11,7 @@ async function makeOpenAiClient(): Promise<OpenAI> {
 
 export const toolChat = createServerFn()
 	.validator(z.object({
-		messages: messagesSchema,
+		messages: openAiMessagesSchema,
 	}))
 .handler(async (ctx) => {
 	const client = await makeOpenAiClient();
@@ -23,6 +23,7 @@ export const toolChat = createServerFn()
 			// tools,
 			n: 1,
 		});
+
 		return chatCompletion.choices[0].message;
 	} catch (error) {
 		//TODO: handle error

@@ -4,13 +4,11 @@ import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { useState } from "react";
 import { toolChat } from "../server/chat";
-import type { messagesSchema } from "../lib/types";
-import type { z } from "zod";
-import { Spinner } from "@nextui-org/react";
-import { LoadingDots } from "./loading-dots";
+import type { MessageType } from "../lib/types";
+import { Message } from "./message";
 
 export const ChatWindow = () => {
-	const [messages, setMessages] = useState<z.infer<typeof messagesSchema>>([]);
+	const [messages, setMessages] = useState<MessageType[]>([]);
 	const [inputText, setInputText] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -54,22 +52,13 @@ export const ChatWindow = () => {
 				<ScrollShadow className="flex-grow">
 					<div className="flex flex-col gap-3">
 						{messagesWithLoading.map((message, index) => (
-							<div
+							<Message
+								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 								key={index}
-								className={`flex ${
-									message.role === "user" ? "justify-end" : "justify-start"
-								}`}
-							>
-								<div
-									className={`px-4 py-2 rounded-lg max-w-[80%] ${
-										message.role === "user"
-											? "bg-primary text-primary-foreground"
-											: "bg-default-100"
-									}`}
-								>
-									{message.isLoading ? <LoadingDots /> : message.content}
-								</div>
-							</div>
+								role={message.role as "system" | "user" | "assistant"}
+								content={message.content}
+								isLoading={message.isLoading}
+							/>
 						))}
 					</div>
 				</ScrollShadow>
