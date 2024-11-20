@@ -17,9 +17,9 @@ export const Banner = () => {
 					startContent={<FontAwesomeIcon icon={faGithub} />}
 					variant="light"
 					//TODO: Add link to the repo
-					href="https://github.com/Snowpilot/toolcool"
+					href="https://github.com/SnowPilotOrg/tool-cool"
 				>
-					Snowpilot/toolcool
+					SnowPilotOrg/tool-cool
 				</Button>
 			</div>
 		</div>
