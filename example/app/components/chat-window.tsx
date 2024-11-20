@@ -6,7 +6,8 @@ import { useState } from "react";
 import { toolChat } from "~/server/chat";
 import type { MessageType } from "~/lib/types";
 import { Message } from "~/components/message";
-import { ArrowUpIcon } from "lucide-react";
+import { ArrowUpIcon, RefreshCcwIcon, XIcon } from "lucide-react";
+import { Placeholder } from "./placeholder";
 
 export const ChatWindow = () => {
 	const [messages, setMessages] = useState<MessageType[]>([]);
@@ -40,13 +41,29 @@ export const ChatWindow = () => {
 		setIsLoading(false);
 	};
 
+	const handleReset = () => {
+		setMessages([]);
+		setInputText("");
+	};
+
 	const messagesWithLoading = [
 		...messages,
 		...(isLoading ? [{ role: "assistant", content: "", isLoading }] : []),
 	];
 
 	return (
-		<Card className="w-full max-w-2xl  h-[600px] max-h-screen flex flex-col">
+		<Card className="w-full max-w-2xl  h-[600px] max-h-screen flex flex-col relative">
+			{messages.length > 0 && (
+				<Button
+					isIconOnly
+					size="sm"
+					variant="light"
+					className="absolute top-4 left-4 z-10"
+					onClick={handleReset}
+				>
+					<RefreshCcwIcon size={16} />
+				</Button>
+			)}
 			<CardBody className="p-4 flex flex-col gap-2">
 				<ScrollShadow className="flex-grow">
 					<div className="flex flex-col gap-3">
@@ -60,6 +77,11 @@ export const ChatWindow = () => {
 							/>
 						))}
 					</div>
+					{messages.length === 0 && (
+						<div className="flex justify-center items-center h-full">
+							{<Placeholder />}
+						</div>
+					)}
 				</ScrollShadow>
 				<div className="flex flex-wrap gap-2">
 					{[
