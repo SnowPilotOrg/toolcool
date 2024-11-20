@@ -2,22 +2,19 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router";
 
 import { Button } from "@nextui-org/button";
+import { Background } from "../components/background";
+import { ChatWindow } from "../components/chat-window";
 
 export const Route = createFileRoute("/")({
 	component: Home,
 });
 
 function Home() {
-	const router = useRouter();
 
 	return (
-		<Button
-			type="button"
-			onClick={() => {
-				console.log("clicked");
-			}}
-		>
-			Add Button
-		</Button>
+		<Background className="flex justify-center items-center">
+			
+			<ChatWindow />
+		</Background>
 	);
 }

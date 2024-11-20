@@ -6,7 +6,7 @@ import {
 import { Meta, Scripts } from "@tanstack/start";
 import type { ReactNode } from "react";
 import { NextUIProvider } from "@nextui-org/react";
-import "../styles/tailwind.css";
+import "../main.css";
 
 export const Route = createRootRoute({
 	head: () => ({
