@@ -13,11 +13,12 @@ export const ChatWindow = () => {
 	const [inputText, setInputText] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 
-	const handleSend = async () => {
-		if (!inputText.trim()) return;
+	const handleSend = async (prompt?: string) => {
+		const messageText = prompt || inputText;
+		if (!messageText.trim()) return;
 
 		const newMessage = {
-			content: inputText,
+			content: messageText,
 			role: "user" as const,
 		};
 
@@ -45,8 +46,8 @@ export const ChatWindow = () => {
 	];
 
 	return (
-		<Card className="w-full max-w-2xl  min-h-[500px] max-h-screen flex flex-col">
-			<CardBody className="p-4 flex flex-col gap-4">
+		<Card className="w-full max-w-2xl  h-[600px] max-h-screen flex flex-col">
+			<CardBody className="p-4 flex flex-col gap-2">
 				<ScrollShadow className="flex-grow">
 					<div className="flex flex-col gap-3">
 						{messagesWithLoading.map((message, index) => (
@@ -60,6 +61,37 @@ export const ChatWindow = () => {
 						))}
 					</div>
 				</ScrollShadow>
+				<div className="flex flex-wrap gap-2">
+					{[
+						{
+							text: "Latest HN News",
+							prompt: "Explain the latest news from Hacker News",
+						},
+						{
+							text: "Trending Topics",
+							prompt: "What are the top trending topics?",
+						},
+						{
+							text: "Interesting Discussions",
+							prompt: "Summarize the most interesting discussions",
+						},
+						{
+							text: "Top Posts",
+							prompt: "What are the most upvoted posts today?",
+						},
+					].map(({ text, prompt }) => (
+						<Button
+							key={text}
+							size="sm"
+							variant="flat"
+							onClick={() => {
+								handleSend(prompt);
+							}}
+						>
+							{text}
+						</Button>
+					))}
+				</div>
 				<div>
 					<Input
 						value={inputText}
@@ -77,7 +109,7 @@ export const ChatWindow = () => {
 								size="sm"
 								variant="solid"
 								radius="full"
-								onClick={handleSend}
+								onClick={() => handleSend()}
 								color="primary"
 							>
 								<ArrowUpIcon />
