@@ -22,18 +22,21 @@ export const ChatWindow = () => {
 		setMessages((prev) => [...prev, newMessage]);
 		setInputText("");
 		const response = await toolChat({
-			data: { messages: [...messages, newMessage] }
+			data: { messages: [...messages, newMessage] },
 		});
 		if (response?.content) {
-			setMessages((prev) => [...prev, {
-				role: "assistant",
-				content: response.content as string
-			}]);
+			setMessages((prev) => [
+				...prev,
+				{
+					role: "assistant",
+					content: response.content as string,
+				},
+			]);
 		}
 	};
 
 	return (
-		<Card className="w-full max-w-2xl h-2xl flex flex-col">
+		<Card className="w-full max-w-2xl h-2xl min-h-[400px] max-h-screen flex flex-col">
 			<CardHeader className="border-b border-divider">
 				<h4 className="text-lg font-semibold">Chat Interface</h4>
 			</CardHeader>
@@ -44,9 +47,7 @@ export const ChatWindow = () => {
 							<div
 								key={index}
 								className={`flex ${
-									message.role === "user"
-										? "justify-end"
-										: "justify-start"
+									message.role === "user" ? "justify-end" : "justify-start"
 								}`}
 							>
 								<div
@@ -77,4 +78,4 @@ export const ChatWindow = () => {
 			</CardBody>
 		</Card>
 	);
-}
+};
