@@ -10,10 +10,10 @@
 		"allowJs": true,
 
 		// Bundler mode
-		"moduleResolution": "bundler",
-		"allowImportingTsExtensions": true,
+		"moduleResolution": "node",
+		"allowImportingTsExtensions": false,
 		"verbatimModuleSyntax": true,
-		"noEmit": true,
+		"noEmit": false,
 
 		// Best practices
 		"strict": true,
@@ -23,6 +23,10 @@
 		// Some stricter flags (disabled by default)
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
-		"noPropertyAccessFromIndexSignature": false
+		"noPropertyAccessFromIndexSignature": false,
+
+		// Change these settings
+		"outDir": "dist",
+		"declaration": true
 	}
 }

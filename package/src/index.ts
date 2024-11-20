@@ -4,28 +4,17 @@ import type {
 } from "openai/resources/chat/completions";
 import { getProviders } from "./providers";
 
-// JSON Schema type for function parameters
-export interface FunctionParameters {
-	type: "object";
-	properties: Record<
-		string,
-		{
-			type: string;
-			description?: string;
-			default?: unknown;
-			[key: string]: unknown;
-		}
-	>;
-	required?: string[];
-	[key: string]: unknown;
-}
+export type JSONSchema = Record<string, unknown>;
 
-export interface Tool {
+export type Tool = {
 	name: string;
 	description: string;
-	parameters?: FunctionParameters;
-	fn: (args: Record<string, unknown>) => Promise<unknown>;
-}
+	inputSchema: JSONSchema;
+	outputSchema: JSONSchema;
+	// TODO: figure out how to give this the typing matching
+	// the input and output schema
+	fn: (args: unknown) => Promise<unknown>;
+};
 
 export interface ToolProvider {
 	name: string;
@@ -44,37 +33,34 @@ export async function discoverTools(providerNames: string[]): Promise<Tool[]> {
 	return discoveredTools;
 }
 
-export function toolsToOpenAIFormat(
-	tools: Map<string, Tool>,
-): ChatCompletionTool[] {
-	return Array.from(tools.values()).map((tool) => ({
-		type: "function" as const,
+function toolToOpenAIFormat(tool: Tool): ChatCompletionTool {
+	return {
+		type: "function",
 		function: {
-			name: tool.name,
+			parameters: tool.inputSchema,
 			description: tool.description,
-			parameters: tool.parameters || {
-				type: "object" as const,
-				properties: {},
-			},
+			name: tool.name,
 		},
-	}));
+	};
 }
 
-export async function executeToolCalls(
-	tools: Map<string, Tool>,
+export function toOpenAIFormat(...tools: Tool[]): ChatCompletionTool[] {
+	return tools.map(toolToOpenAIFormat);
+}
+export async function callTools(
+	tools: Tool[],
 	toolCalls: ChatCompletionMessageToolCall[],
 ): Promise<unknown[]> {
-	const results: unknown[] = [];
+	const toolMap = new Map(tools.map((t) => [t.name, t]));
 
-	for (const call of toolCalls) {
-		const tool = tools.get(call.function.name);
-		if (!tool) {
-			throw new Error(`Tool ${call.function.name} not found`);
-		}
-
-		const args = JSON.parse(call.function.arguments);
-		results.push(await tool.fn(args));
-	}
-
-	return results;
+	return Promise.all(
+		toolCalls.map((call) => {
+			const tool = toolMap.get(call.function.name);
+			if (!tool) {
+				throw new Error(`Tool ${call.function.name} not found`);
+			}
+			const args = JSON.parse(call.function.arguments);
+			return tool.fn(args);
+		}),
+	);
 }
