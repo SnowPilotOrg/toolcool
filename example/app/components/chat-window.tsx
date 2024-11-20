@@ -6,10 +6,13 @@ import { useState } from "react";
 import { toolChat } from "../server/chat";
 import type { messagesSchema } from "../lib/types";
 import type { z } from "zod";
+import { Spinner } from "@nextui-org/react";
+import { LoadingDots } from "./loading-dots";
 
 export const ChatWindow = () => {
 	const [messages, setMessages] = useState<z.infer<typeof messagesSchema>>([]);
 	const [inputText, setInputText] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 
 	const handleSend = async () => {
 		if (!inputText.trim()) return;
@@ -21,6 +24,7 @@ export const ChatWindow = () => {
 
 		setMessages((prev) => [...prev, newMessage]);
 		setInputText("");
+		setIsLoading(true);
 		const response = await toolChat({
 			data: { messages: [...messages, newMessage] },
 		});
@@ -33,7 +37,13 @@ export const ChatWindow = () => {
 				},
 			]);
 		}
+		setIsLoading(false);
 	};
+
+	const messagesWithLoading = [
+		...messages,
+		...(isLoading ? [{ role: "assistant", content: "", isLoading }] : []),
+	];
 
 	return (
 		<Card className="w-full max-w-2xl h-2xl min-h-[400px] max-h-screen flex flex-col">
@@ -43,7 +53,7 @@ export const ChatWindow = () => {
 			<CardBody className="p-4 flex flex-col gap-4">
 				<ScrollShadow className="flex-grow">
 					<div className="flex flex-col gap-3">
-						{messages.map((message, index) => (
+						{messagesWithLoading.map((message, index) => (
 							<div
 								key={index}
 								className={`flex ${
@@ -57,7 +67,7 @@ export const ChatWindow = () => {
 											: "bg-default-100"
 									}`}
 								>
-									{message.content}
+									{message.isLoading ? <LoadingDots /> : message.content}
 								</div>
 							</div>
 						))}
