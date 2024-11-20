@@ -1,7 +1,5 @@
 {
   "editor.defaultFormatter": "biomejs.biome",
-  "editor.formatOnSave": true,
-  "editor.formatOnPaste": true,
   "typescript.tsdk": "./node_modules/typescript/lib",
   "biome.lspBin": "./node_modules/@biomejs/biome/bin/biome",
   "biome.requireConfiguration": true,
@@ -9,5 +7,37 @@
   "editor.codeActionsOnSave": {
     "quickfix.biome": "explicit",
     "source.organizeImports.biome": "never"
-  }
-} 
+  },
+	"typescript.preferences.importModuleSpecifier": "non-relative",
+	"typescript.enablePromptUseWorkspaceTsdk": true,
+	"typescript.updateImportsOnFileMove.enabled": "prompt",
+	"javascript.updateImportsOnFileMove.enabled": "prompt",
+	"emmet.includeLanguages": {
+		"typescript": "typescriptreact",
+		"javascript": "javascriptreact",
+		"typescriptreact": "html",
+		"javascriptreact": "html"
+	},
+	"files.associations": {
+		"*.css": "tailwindcss"
+	},
+	"editor.quickSuggestions": {
+		"strings": "on"
+	},
+	"tailwindCSS.files.exclude": [
+		"**/.git/**",
+		"**/node_modules/**",
+		"**/.hg/**",
+		"**/.svn/**",
+		"**/.vinxi/**",
+		"**/.output/**",
+		"**/.keys/**",
+		"**/.next/**"
+	],
+	"[css]": {
+		"editor.defaultFormatter": "vscode.css-language-features"
+	},
+	"[tailwindcss]": {
+		"editor.defaultFormatter": "numso.prettier-standard-vscode"
+	}
+}
