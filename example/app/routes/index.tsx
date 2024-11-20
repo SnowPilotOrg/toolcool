@@ -1,10 +1,10 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
-import { Button } from "@nextui-org/button";
 import { Background } from "../components/background";
 import { ChatWindow } from "../components/chat-window";
 import { Selector } from "../components/selector";
 import { CodeBlock } from "../components/codeblock";
+import { Banner } from "../components/banner";
 
 export const Route = createFileRoute("/")({
 	component: Home,
@@ -25,9 +25,12 @@ return chatCompletion.choices[0].message;`;
 function Home() {
 	return (
 		<Background className="flex justify-center items-center">
-			<div className="flex flex-col gap-4 w-full max-w-2xl">
-				<Selector />
-				<ChatWindow />
+			<div className="flex flex-col gap-12 w-full max-w-2xl">
+				<Banner />
+				<div className="flex flex-col gap-4">
+					<ChatWindow />
+					<Selector />
+				</div>
 				<CodeBlock code={code} />
 			</div>
 		</Background>
