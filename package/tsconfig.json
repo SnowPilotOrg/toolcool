@@ -1,6 +1,5 @@
 {
 	"compilerOptions": {
-		"forceConsistentCasingInFileNames": true,
 		// Enable latest features
 		"lib": ["ESNext", "DOM"],
 		"target": "ESNext",
@@ -16,6 +15,7 @@
 		"noEmit": false,
 
 		// Best practices
+		"forceConsistentCasingInFileNames": true,
 		"strict": true,
 		"skipLibCheck": true,
 		"noFallthroughCasesInSwitch": true,
@@ -25,8 +25,11 @@
 		"noUnusedParameters": false,
 		"noPropertyAccessFromIndexSignature": false,
 
-		// Change these settings
+		// For building the package
 		"outDir": "dist",
-		"declaration": true
-	}
+		"declaration": true,
+		"declarationMap": true,
+		"emitDeclarationOnly": true
+	},
+	"include": ["src/**/*"]
 }

@@ -4,6 +4,8 @@ import type {
 } from "openai/resources/chat/completions";
 import { getProviders } from "./providers";
 
+export * from "./providers";
+
 export type JSONSchema = Record<string, unknown>;
 
 export type Tool = {
