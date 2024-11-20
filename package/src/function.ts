@@ -1,5 +1,5 @@
 import type { ChatCompletionTool } from "openai/resources/chat/completions";
-import { z } from "zod";
+import type { z } from "zod";
 import zodToJsonSchema, {
 	type JsonSchema7ObjectType,
 	type JsonSchema7Type,
@@ -8,7 +8,7 @@ import zodToJsonSchema, {
 /**
  * Define an OpenAI Function call using zod instead of JSON schema.
  */
-export type ZodFunctionDef<Parameters = any> = {
+export type ZodFunctionDef<Parameters = Record<string, unknown>> = {
 	/** Function name. */
 	name: string;
 
