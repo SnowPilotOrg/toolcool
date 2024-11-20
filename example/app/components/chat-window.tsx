@@ -3,29 +3,33 @@ import { ScrollShadow } from "@nextui-org/scroll-shadow";
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { useState } from "react";
-
-interface Message {
-	id: number;
-	text: string;
-	sender: "user" | "assistant";
-}
+import { toolChat } from "../server/chat";
+import type { messagesSchema } from "../lib/types";
+import type { z } from "zod";
 
 export const ChatWindow = () => {
-	const [messages, setMessages] = useState<Message[]>([]);
+	const [messages, setMessages] = useState<z.infer<typeof messagesSchema>>([]);
 	const [inputText, setInputText] = useState("");
 
-	const handleSend = () => {
+	const handleSend = async () => {
 		if (!inputText.trim()) return;
 
-		setMessages((prev) => [
-			...prev,
-			{
-				id: Date.now(),
-				text: inputText,
-				sender: "user",
-			},
-		]);
+		const newMessage = {
+			content: inputText,
+			role: "user" as const,
+		};
+
+		setMessages((prev) => [...prev, newMessage]);
 		setInputText("");
+		const response = await toolChat({
+			data: { messages: [...messages, newMessage] }
+		});
+		if (response?.content) {
+			setMessages((prev) => [...prev, {
+				role: "assistant",
+				content: response.content as string
+			}]);
+		}
 	};
 
 	return (
@@ -36,23 +40,23 @@ export const ChatWindow = () => {
 			<CardBody className="p-4 flex flex-col gap-4">
 				<ScrollShadow className="flex-grow">
 					<div className="flex flex-col gap-3">
-						{messages.map((message) => (
+						{messages.map((message, index) => (
 							<div
-								key={message.id}
+								key={index}
 								className={`flex ${
-									message.sender === "user"
+									message.role === "user"
 										? "justify-end"
 										: "justify-start"
 								}`}
 							>
 								<div
 									className={`px-4 py-2 rounded-lg max-w-[80%] ${
-										message.sender === "user"
+										message.role === "user"
 											? "bg-primary text-primary-foreground"
 											: "bg-default-100"
 									}`}
 								>
-									{message.text}
+									{message.content}
 								</div>
 							</div>
 						))}
