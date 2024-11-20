@@ -6,6 +6,9 @@ import { useState } from "react";
 import { toolChat } from "../server/chat";
 import type { MessageType } from "../lib/types";
 import { Message } from "./message";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { ArrowUpIcon } from "lucide-react";
 
 export const ChatWindow = () => {
 	const [messages, setMessages] = useState<MessageType[]>([]);
@@ -44,10 +47,7 @@ export const ChatWindow = () => {
 	];
 
 	return (
-		<Card className="w-full max-w-2xl h-2xl min-h-[400px] max-h-screen flex flex-col">
-			<CardHeader className="border-b border-divider">
-				<h4 className="text-lg font-semibold">Chat Interface</h4>
-			</CardHeader>
+		<Card className="w-full max-w-2xl  min-h-[500px] max-h-screen flex flex-col">
 			<CardBody className="p-4 flex flex-col gap-4">
 				<ScrollShadow className="flex-grow">
 					<div className="flex flex-col gap-3">
@@ -62,7 +62,7 @@ export const ChatWindow = () => {
 						))}
 					</div>
 				</ScrollShadow>
-				<div className="flex gap-2">
+				<div>
 					<Input
 						value={inputText}
 						onChange={(e) => setInputText(e.target.value)}
@@ -71,8 +71,21 @@ export const ChatWindow = () => {
 							if (e.key === "Enter") handleSend();
 						}}
 						className="flex-grow"
+						variant="bordered"
+						size="lg"
+						endContent={
+							<Button
+								isIconOnly
+								size="sm"
+								variant="solid"
+								radius="full"
+								onClick={handleSend}
+								color="primary"
+							>
+								<ArrowUpIcon />
+							</Button>
+						}
 					/>
-					<Button onClick={handleSend}>Send</Button>
 				</div>
 			</CardBody>
 		</Card>
