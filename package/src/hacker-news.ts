@@ -1,7 +1,7 @@
 
 import { z } from "zod";
 //TODO: add routing to @
-import type { ZodFunctionDef } from "../lib/function";
+import type { ZodFunctionDef } from "./function";
 // Base schema for common fields
 export const itemFunctions: ZodFunctionDef[] = [
 	{

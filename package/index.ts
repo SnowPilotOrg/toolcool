@@ -1,7 +1,7 @@
 import { OpenAI } from "openai";
-import { toTool } from "./lib/function";
-import { itemFunctions } from "./connections/hacker-news";
-import readline from "readline";
+import { toTool } from "./src/function";
+import { itemFunctions } from "./src/hacker-news";
+import readline from "node:readline";
 
 console.log("About to run some cool tools");
 
