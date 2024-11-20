@@ -1,84 +1,100 @@
 import { test, expect } from "bun:test";
-import { ToolCool } from '../src';
-import { HackerNewsProvider } from '../src/hacker-news';
-import { OpenAI } from 'openai';
+import {
+	discoverTools,
+	toolsToOpenAIFormat,
+	executeToolCalls,
+	type Tool,
+} from "../src";
+import { getProviders } from "../src/providers";
+import { OpenAI } from "openai";
 
-test("ToolCool E2E - should discover tools and execute OpenAI tool calls", async () => {
-  const toolCool = new ToolCool();
-  const openai = new OpenAI();
+test("Tool Calling E2E - should discover tools and execute OpenAI tool calls", async () => {
+	const tools = new Map<string, Tool>();
+	const openai = new OpenAI();
 
-  // Register providers
-  toolCool.registerProvider(new HackerNewsProvider());
+	// Discover available tools
+	const discoveredTools = await discoverTools(["hacker-news"]);
 
-  // Discover and register tools
-  const tools = await toolCool.discoverTools({
-    providers: ["hacker-news"],
-  });
+	// Register tools
+	const allTools = [
+		...discoveredTools,
+		{
+			name: "myInternalTool",
+			description: "This is my internal tool",
+			fn: async () => {
+				return "Hello, world!";
+			},
+		},
+	];
 
-  toolCool.registerTools([
-    ...tools,
-    {
-      name: "myInternalTool",
-      description: "This is my internal tool",
-      fn: async () => {
-        return "Hello, world!";
-      },
-    },
-  ]);
+	// Add tools to the map
+	for (const tool of allTools) {
+		tools.set(tool.name, tool);
+	}
 
-  // First message to get HN stories
-  const response1 = await openai.chat.completions.create({
-    model: "gpt-4",
-    messages: [{ 
-      role: "user", 
-      content: "Use getTopStories to fetch 2 Hacker News stories." 
-    }],
-    tools: toolCool.openaiTools(),
-    tool_choice: "auto",
-  });
+	// First message to get HN stories
+	const response1 = await openai.chat.completions.create({
+		model: "gpt-4",
+		messages: [
+			{
+				role: "user",
+				content: "Use getTopStories to fetch 2 Hacker News stories.",
+			},
+		],
+		tools: toolsToOpenAIFormat(tools),
+		tool_choice: "auto",
+	});
 
-  console.log('First OpenAI Response:', JSON.stringify(response1.choices[0].message, null, 2));
-  
-  const firstResults = await toolCool.executeToolCalls(
-    response1.choices[0].message.tool_calls || []
-  );
+	console.log(
+		"First OpenAI Response:",
+		JSON.stringify(response1.choices[0].message, null, 2),
+	);
 
-  // Second message to use internal tool
-  const response2 = await openai.chat.completions.create({
-    model: "gpt-4",
-    messages: [
-      { 
-        role: "user", 
-        content: "Now use myInternalTool to say hello." 
-      }
-    ],
-    tools: toolCool.openaiTools(),
-    tool_choice: "auto",
-  });
+	const firstResults = await executeToolCalls(
+		tools,
+		response1.choices[0].message.tool_calls || [],
+	);
 
-  console.log('Second OpenAI Response:', JSON.stringify(response2.choices[0].message, null, 2));
+	// Second message to use internal tool
+	const response2 = await openai.chat.completions.create({
+		model: "gpt-4",
+		messages: [
+			{
+				role: "user",
+				content: "Now use myInternalTool to say hello.",
+			},
+		],
+		tools: toolsToOpenAIFormat(tools),
+		tool_choice: "auto",
+	});
 
-  const secondResults = await toolCool.executeToolCalls(
-    response2.choices[0].message.tool_calls || []
-  );
+	console.log(
+		"Second OpenAI Response:",
+		JSON.stringify(response2.choices[0].message, null, 2),
+	);
 
-  const allResults = [...firstResults, ...secondResults];
-  console.log('All tool execution results:', allResults);
+	const secondResults = await executeToolCalls(
+		tools,
+		response2.choices[0].message.tool_calls || [],
+	);
 
-  // Assertions
-  expect(allResults).toBeDefined();
-  expect(allResults.length).toBeGreaterThan(1);
-  
-  // Verify HN stories were fetched
-  const hnResult = allResults.find(r => Array.isArray(r));
-  expect(hnResult).toBeDefined();
-  if (Array.isArray(hnResult)) {
-    expect(hnResult.length).toBeLessThanOrEqual(2);
-    expect(hnResult[0]).toHaveProperty('title');
-    expect(hnResult[0]).toHaveProperty('url');
-  }
+	const allResults = [...firstResults, ...secondResults];
+	console.log("All tool execution results:", allResults);
 
-  // Verify internal tool was called
-  const helloResult = allResults.find(r => r === "Hello, world!");
-  expect(helloResult).toBeDefined();
+	// Assertions
+	expect(allResults).toBeDefined();
+	expect(allResults.length).toBeGreaterThan(1);
+
+	// Verify HN stories were fetched
+	const hnResult = allResults.find((r) => Array.isArray(r));
+	expect(hnResult).toBeDefined();
+	if (Array.isArray(hnResult)) {
+		expect(hnResult.length).toBeLessThanOrEqual(2);
+		expect(hnResult[0]).toHaveProperty("title");
+		expect(hnResult[0]).toHaveProperty("url");
+	}
+
+	// Verify internal tool was called
+	const helloResult = allResults.find((r) => r === "Hello, world!");
+	expect(helloResult).toBeDefined();
 });

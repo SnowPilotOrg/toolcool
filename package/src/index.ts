@@ -1,87 +1,80 @@
-import type { ChatCompletionTool, ChatCompletionMessageToolCall } from "openai/resources/chat/completions";
+import type {
+	ChatCompletionTool,
+	ChatCompletionMessageToolCall,
+} from "openai/resources/chat/completions";
+import { getProviders } from "./providers";
 
 // JSON Schema type for function parameters
 export interface FunctionParameters {
-  type: "object";
-  properties: Record<string, {
-    type: string;
-    description?: string;
-    default?: unknown;
-    [key: string]: unknown;
-  }>;
-  required?: string[];
-  [key: string]: unknown;
+	type: "object";
+	properties: Record<
+		string,
+		{
+			type: string;
+			description?: string;
+			default?: unknown;
+			[key: string]: unknown;
+		}
+	>;
+	required?: string[];
+	[key: string]: unknown;
 }
 
 export interface Tool {
-  name: string;
-  description: string;
-  parameters?: FunctionParameters;
-  fn: (args: Record<string, unknown>) => Promise<unknown>;
+	name: string;
+	description: string;
+	parameters?: FunctionParameters;
+	fn: (args: Record<string, unknown>) => Promise<unknown>;
 }
 
 export interface ToolProvider {
-  name: string;
-  discoverTools(): Promise<Tool[]> | Tool[];
+	name: string;
+	discoverTools(): Promise<Tool[]> | Tool[];
 }
 
-export class ToolCool {
-  private tools: Map<string, Tool> = new Map();
-  private providers: Map<string, ToolProvider> = new Map();
+export async function discoverTools(providerNames: string[]): Promise<Tool[]> {
+	const discoveredTools: Tool[] = [];
 
-  registerProvider(provider: ToolProvider) {
-    this.providers.set(provider.name, provider);
-  }
+	const providers = getProviders(providerNames);
+	for (const provider of providers.values()) {
+		const tools = await provider.discoverTools();
+		discoveredTools.push(...tools);
+	}
 
-  async discoverTools(options: { providers: string[] }) {
-    const discoveredTools: Tool[] = [];
-    
-    for (const providerName of options.providers) {
-      const provider = this.providers.get(providerName);
-      if (!provider) {
-        throw new Error(`Provider ${providerName} not found`);
-      }
-      
-      const tools = await provider.discoverTools();
-      discoveredTools.push(...tools);
-    }
-    
-    return discoveredTools;
-  }
+	return discoveredTools;
+}
 
-  registerTools(tools: Tool[]) {
-    for (const tool of tools) {
-      this.tools.set(tool.name, tool);
-    }
-  }
+export function toolsToOpenAIFormat(
+	tools: Map<string, Tool>,
+): ChatCompletionTool[] {
+	return Array.from(tools.values()).map((tool) => ({
+		type: "function" as const,
+		function: {
+			name: tool.name,
+			description: tool.description,
+			parameters: tool.parameters || {
+				type: "object" as const,
+				properties: {},
+			},
+		},
+	}));
+}
 
-  openaiTools(): ChatCompletionTool[] {
-    return Array.from(this.tools.values()).map(tool => ({
-      type: 'function' as const,
-      function: {
-        name: tool.name,
-        description: tool.description,
-        parameters: tool.parameters || { 
-          type: 'object' as const,
-          properties: {} 
-        }
-      }
-    }));
-  }
+export async function executeToolCalls(
+	tools: Map<string, Tool>,
+	toolCalls: ChatCompletionMessageToolCall[],
+): Promise<unknown[]> {
+	const results: unknown[] = [];
 
-  async executeToolCalls(toolCalls: ChatCompletionMessageToolCall[]) {
-    const results: unknown[] = [];
-    
-    for (const call of toolCalls) {
-      const tool = this.tools.get(call.function.name);
-      if (!tool) {
-        throw new Error(`Tool ${call.function.name} not found`);
-      }
+	for (const call of toolCalls) {
+		const tool = tools.get(call.function.name);
+		if (!tool) {
+			throw new Error(`Tool ${call.function.name} not found`);
+		}
 
-      const args = JSON.parse(call.function.arguments);
-      results.push(await tool.fn(args));
-    }
+		const args = JSON.parse(call.function.arguments);
+		results.push(await tool.fn(args));
+	}
 
-    return results;
-  }
-} 
+	return results;
+}
