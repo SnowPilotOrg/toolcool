@@ -18,6 +18,7 @@ export function CodeBlock({ code, language = "typescript" }: CodeBlockProps) {
 					fontSize: "0.875rem",
 					fontFamily: "monospace",
 					lineHeight: "1.5",
+					backgroundColor: "white",
 				}}
 			>
 				{code}
