@@ -7,8 +7,6 @@ import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 export default defineConfig({
 	vite: {
 		plugins: [
-			TanStackRouterVite(),
-			viteReact(),
 			viteTsConfigPaths({
 				projects: ["./tsconfig.json"],
 			}),
