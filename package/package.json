@@ -1,5 +1,5 @@
 {
-	"name": "@snowpilot/tool-cool",
+	"name": "@snowpilot/toolcool",
 	"module": "./dist/index.js",
 	"version": "0.1.1",
 	"description": "Helpers to simplify LLM tool calls for popular APIs",
