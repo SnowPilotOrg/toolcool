@@ -5,7 +5,6 @@ import type {
 import { getProviders } from "./providers";
 import type { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
-import { getTopStoriesInput } from "./providers/hacker-news";
 
 export * from "./providers";
 
