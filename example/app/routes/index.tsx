@@ -29,7 +29,7 @@ function Home() {
 				<Banner />
 				<div className="flex flex-col gap-4">
 					<ChatWindow />
-					<Selector />
+					{/* <Selector /> */}
 				</div>
 				<div className="pb-12">
 					<CodeBlock code={code} />

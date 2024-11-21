@@ -8,6 +8,7 @@ import type { MessageType } from "~/lib/types";
 import { Message } from "~/components/message";
 import { ArrowUpIcon, RefreshCcwIcon, XIcon } from "lucide-react";
 import { Placeholder } from "./placeholder";
+import { Recommendations } from "./recommendations";
 
 export const ChatWindow = () => {
 	const [messages, setMessages] = useState<MessageType[]>([]);
@@ -83,37 +84,7 @@ export const ChatWindow = () => {
 						</div>
 					)}
 				</ScrollShadow>
-				<div className="flex flex-wrap gap-2">
-					{[
-						{
-							text: "Latest HN News",
-							prompt: "Explain the latest news from Hacker News",
-						},
-						{
-							text: "Trending Topics",
-							prompt: "What are the top trending topics?",
-						},
-						{
-							text: "Interesting Discussions",
-							prompt: "Summarize the most interesting discussions",
-						},
-						{
-							text: "Top Posts",
-							prompt: "What are the most upvoted posts today?",
-						},
-					].map(({ text, prompt }) => (
-						<Button
-							key={text}
-							size="sm"
-							variant="flat"
-							onClick={() => {
-								handleSend(prompt);
-							}}
-						>
-							{text}
-						</Button>
-					))}
-				</div>
+				<Recommendations handleSend={handleSend} />
 				<div>
 					<Input
 						value={inputText}
