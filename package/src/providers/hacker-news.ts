@@ -14,7 +14,10 @@ export const storySchema = z
 	.object({
 		by: z.string().describe("The username of the author of the story"),
 		descendants: z.number().describe("The number of comments on the story"),
-		kids: z.array(z.number()).describe("The ids of the comments on the story"),
+		kids: z
+			.array(z.number())
+			.optional()
+			.describe("The ids of the comments on the story"),
 		id: z.number().describe("The id of the story"),
 		score: z.number().describe("The score of the story"),
 		time: z.number().describe("The time the story was posted"),

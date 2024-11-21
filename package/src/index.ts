@@ -38,14 +38,13 @@ export async function discoverTools(providerNames: string[]): Promise<Tool[]> {
 }
 
 function toolToOpenAIFormat(tool: Tool): ChatCompletionTool {
-	// console.log("input", tool.inputSchema);
-	// console.log("output", tool.outputSchema);
+	const jsonSchema = zodToJsonSchema(tool.inputSchema);
+	console.debug("jsonSchema", jsonSchema);
+
 	return {
 		type: "function",
 		function: {
-			// parameters: zodToJsonSchema(tool.inputSchema, tool.name),
-			// parameters: zodToJsonSchema(tool.inputSchema),
-			parameters: zodToJsonSchema(getTopStoriesInput),
+			parameters: jsonSchema,
 			description: tool.description,
 			name: tool.name,
 		},

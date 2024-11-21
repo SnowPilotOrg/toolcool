@@ -1,26 +1,26 @@
-import { test, expect } from "bun:test";
-import { callTools, discoverTools, toOpenAIFormat } from "../src";
-import OpenAI from "openai";
+/// <reference types="bun-types" />
 
+import { test, expect } from "bun:test";
+import { callTools, discoverTools, type Tool, toOpenAIFormat } from "../src";
+import OpenAI from "openai";
+import { z } from "zod";
 test("Tool Calling E2E - should discover tools and execute OpenAI tool calls", async () => {
 	// Discover available built-in tools
-	const discoveredTools = await discoverTools(["hacker-news"]);
+	const hackerNewsTools = await discoverTools(["hacker-news"]);
+
+	// Define an internal tool
+	const helloWorldTool: Tool = {
+		name: "helloWorldTool",
+		inputSchema: z.object({}).describe("Input for the helloWorldTool"),
+		outputSchema: z.string().describe("Output for the helloWorldTool"),
+		description: "This is my internal tool",
+		fn: async () => {
+			return "Hello, world!";
+		},
+	};
 
 	// Register internal tool
-	const allTools = [
-		...discoveredTools,
-		{
-			name: "myInternalTool",
-			inputSchema: {},
-			outputSchema: {
-				type: "string",
-			},
-			description: "This is my internal tool",
-			fn: async () => {
-				return "Hello, world!";
-			},
-		},
-	];
+	const allTools = [...hackerNewsTools, helloWorldTool];
 
 	const openai = new OpenAI();
 
