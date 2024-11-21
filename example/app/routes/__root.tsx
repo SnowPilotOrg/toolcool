@@ -58,9 +58,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 				<Meta />
 			</head>
 			<body>
-				<NextUIProvider>
-					<Outlet />
-				</NextUIProvider>
+				{children}
 				<ScrollRestoration />
 				<Scripts />
 			</body>
