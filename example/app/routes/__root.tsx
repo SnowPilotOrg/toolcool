@@ -26,6 +26,9 @@ export const Route = createRootRoute({
 		// links: [{ rel: "stylesheet", href: appCss }],
 	}),
 	component: RootComponent,
+	pendingComponent: () => <div>Loading...</div>,
+	errorComponent: () => <div>Error</div>,
+	notFoundComponent: () => <div>Not Found</div>,
 });
 
 function RootComponent() {
