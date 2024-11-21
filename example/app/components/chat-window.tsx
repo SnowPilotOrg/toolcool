@@ -89,6 +89,7 @@ export const ChatWindow = () => {
 								// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
 								key={index}
 								message={message}
+								loading={isLoading}
 							/>
 						))}
 						{isLoading && <LoadingMessage />}

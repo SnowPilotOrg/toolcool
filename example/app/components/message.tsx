@@ -1,6 +1,7 @@
 import { CodeIcon } from "lucide-react";
 import { LoadingDots } from "~/components/loading-dots";
 import type { MessageType } from "~/lib/types";
+import { BrandIcon } from "./brand-icon";
 
 export const LoadingMessage = () => {
 	return (
@@ -34,7 +35,7 @@ const MessageBubble = ({
 	);
 };
 
-export const Message = ({ message }: { message: MessageType }) => {
+export const Message = ({ message, loading }: { message: MessageType; loading: boolean }) => {
 	if (message.role === "tool") {
 		return <></>;
 	}
@@ -48,8 +49,10 @@ export const Message = ({ message }: { message: MessageType }) => {
 						key={index}
 						userRole={false}
 					>
-						<CodeIcon className="mr-2 inline-block" size={16} />
-						<span className="font-bold">{tool_call.function.name}</span>
+						<BrandIcon brand="hacker-news" className="mr-2 inline-block" />
+						<span className={`${loading ? "animate-pulse" : ""}`}>
+							{tool_call.function.name}
+						</span>
 					</MessageBubble>
 				))}
 			</>
