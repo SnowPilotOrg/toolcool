@@ -1,6 +1,7 @@
 # Notes for contributors
 
 - Building:
+  - `bun install` is used to install the dependencies.
   - `bun build` is used to build the package.
   - `bun test` is used to run the tests.
 
