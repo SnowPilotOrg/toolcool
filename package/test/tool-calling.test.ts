@@ -3,12 +3,9 @@
 import { expect, test } from "bun:test";
 import OpenAI from "openai";
 import { z } from "zod";
-import { type Tool, callTools, discoverTools, toOpenAIFormat } from "../src";
+import { type Tool, callTools, hackerNewsTools, toOpenAIFormat } from "../src";
 
 test("Tool Calling E2E - should discover tools and execute OpenAI tool calls", async () => {
-	// Discover available built-in tools
-	const hackerNewsTools = await discoverTools(["hacker-news"]);
-
 	// Define an internal tool
 	const helloWorldTool: Tool = {
 		name: "helloWorldTool",
@@ -34,7 +31,7 @@ test("Tool Calling E2E - should discover tools and execute OpenAI tool calls", a
 				content: "Use getTopStories to fetch 2 Hacker News stories.",
 			},
 		],
-		tools: toOpenAIFormat(...allTools),
+		tools: toOpenAIFormat(allTools),
 		tool_choice: "auto",
 	});
 
@@ -57,7 +54,7 @@ test("Tool Calling E2E - should discover tools and execute OpenAI tool calls", a
 				content: "Now use myInternalTool to say hello.",
 			},
 		],
-		tools: toOpenAIFormat(...allTools),
+		tools: toOpenAIFormat(allTools),
 		tool_choice: "auto",
 	});
 
