@@ -7,10 +7,9 @@
 - Publishing:
   - `bun publish`
   - `bun publish --access public` is used to publish the package for the first time.
-  - `bun publish --access public --dry-run` is used to check the package is ready to be published.
+  - `bun publish --dry-run` is used to check the package is ready to be published.
 
 - Version bumps:
   - `bun version patch`  # 0.1.0 -> 0.1.1
   - `bun version minor`  # 0.1.0 -> 0.2.0
   - `bun version major`  # 0.1.0 -> 1.0.0
-
