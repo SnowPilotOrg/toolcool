@@ -44,6 +44,6 @@
 		}
 	},
 	"files": {
-		"ignore": ["node_modules", ".vinxi", ".output", "src/assets"]
+		"ignore": ["dist/**/*", "node_modules/**/*"]
 	}
 }

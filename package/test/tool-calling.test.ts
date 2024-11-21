@@ -1,9 +1,10 @@
 /// <reference types="bun-types" />
 
-import { test, expect } from "bun:test";
-import { callTools, discoverTools, type Tool, toOpenAIFormat } from "../src";
+import { expect, test } from "bun:test";
 import OpenAI from "openai";
 import { z } from "zod";
+import { type Tool, callTools, discoverTools, toOpenAIFormat } from "../src";
+
 test("Tool Calling E2E - should discover tools and execute OpenAI tool calls", async () => {
 	// Discover available built-in tools
 	const hackerNewsTools = await discoverTools(["hacker-news"]);

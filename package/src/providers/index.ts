@@ -1,5 +1,5 @@
-import { HackerNewsProvider } from "./hacker-news";
 import type { ToolProvider } from "../index";
+import { HackerNewsProvider } from "./hacker-news";
 
 export const builtInProviders: Record<string, () => ToolProvider> = {
 	"hacker-news": () => new HackerNewsProvider(),

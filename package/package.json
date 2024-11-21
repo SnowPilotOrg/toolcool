@@ -30,8 +30,9 @@
 		"typecheck": "tsc --noEmit",
 		"clean": "rm -rf ./dist",
 		"test": "bun test",
-		"format": "biome format --write .",
-		"lint": "biome check --write .",
+		"format": "biome format --fix .",
+		"lint": "biome check --fix .",
+		"lint:unsafe": "biome check --fix --unsafe .",
 		"prepublishOnly": "npm run build"
 	},
 	"devDependencies": {

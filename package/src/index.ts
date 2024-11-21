@@ -1,10 +1,10 @@
 import type {
-	ChatCompletionTool,
 	ChatCompletionMessageToolCall,
+	ChatCompletionTool,
 } from "openai/resources/chat/completions";
-import { getProviders } from "./providers";
 import type { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
+import { getProviders } from "./providers";
 
 export * from "./providers";
 
