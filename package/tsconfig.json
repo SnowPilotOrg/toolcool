@@ -34,5 +34,6 @@
 		// Other
 		"types": ["bun-types"]
 	},
-	"include": ["src/**/*", "index.d.ts"]
+	"include": ["src/**/*", "index.d.ts"],
+	"exclude": ["test/**/*", "**/*.test.ts"]
 }
