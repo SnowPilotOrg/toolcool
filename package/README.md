@@ -1,18 +1,18 @@
-# tool-cool
+# toolcool
 
 Zod schemas to simplify tool calls for popular SaaS APIs
-View package on [npm](https://www.npmjs.com/package/@snowpilot/tool-cool)
+View package on [npm](https://www.npmjs.com/package/@snowpilot/toolcool)
 
 To consume this package with npm:
 
 ```bash
-npm install @snowpilot/tool-cool
+npm install @snowpilot/toolcool
 ```
 
 Usage example:
 
 ```typescript
-import { callTools, discoverTools, toOpenAIFormat } from "@snowpilot/tool-cool";
+import { callTools, discoverTools, toOpenAIFormat } from "@snowpilot/toolcool";
 import OpenAI from "openai";
 
 const openai = new OpenAI();

@@ -12,14 +12,14 @@ export const Banner = () => {
 			</div>
 			<div className="flex flex-col items-start gap-4 sm:items-end">
 				{/* TODO: Add link to the package */}
-				<Snippet>npm install @snowpilot/tool-cool</Snippet>
+				<Snippet>npm install @snowpilot/toolcool</Snippet>
 				<Button
 					startContent={<FontAwesomeIcon icon={faGithub} />}
 					variant="light"
 					//TODO: Add link to the repo
-					href="https://github.com/SnowPilotOrg/tool-cool"
+					href="https://github.com/SnowPilotOrg/toolcool"
 				>
-					SnowPilotOrg/tool-cool
+					SnowPilotOrg/toolcool
 				</Button>
 			</div>
 		</div>

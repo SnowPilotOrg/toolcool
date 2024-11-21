@@ -9,7 +9,7 @@ export const Route = createFileRoute("/")({
 	component: Home,
 });
 
-const code = `import { hackerNewsTools } from "@snowpilot/tool-cool";
+const code = `import { hackerNewsTools } from "@snowpilot/toolcool";
 
 const chatCompletion = await client.chat.completions.create(
 	{

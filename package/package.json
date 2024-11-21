@@ -1,16 +1,16 @@
 {
 	"name": "@snowpilot/toolcool",
 	"module": "./dist/index.js",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Helpers to simplify LLM tool calls for popular APIs",
 	"license": "Apache-2.0",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/SnowPilotOrg/tool-cool"
+		"url": "https://github.com/SnowPilotOrg/toolcool"
 	},
-	"homepage": "https://github.com/SnowPilotOrg/tool-cool",
+	"homepage": "https://github.com/SnowPilotOrg/toolcool",
 	"bugs": {
-		"url": "https://github.com/SnowPilotOrg/tool-cool/issues"
+		"url": "https://github.com/SnowPilotOrg/toolcool/issues"
 	},
 	"author": "Snowpilot <founders@snowpilot.com>",
 	"keywords": [

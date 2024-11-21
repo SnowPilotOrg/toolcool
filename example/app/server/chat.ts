@@ -2,7 +2,7 @@ import {
 	callTools,
 	hackerNewsTools,
 	toOpenAIFormat,
-} from "@snowpilot/tool-cool";
+} from "@snowpilot/toolcool";
 import { createServerFn } from "@tanstack/start";
 import OpenAI from "openai";
 import { z } from "zod";
