@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Background } from "~/components/background";
 import { ChatWindow } from "~/components/chat-window";
 import { Selector } from "~/components/selector";
-import { CodeBlock } from "~/components/codeblock";
+import { CodeBlock, CodeBlocker } from "~/components/codeblock";
 import { Banner } from "~/components/banner";
 
 export const Route = createFileRoute("/")({
@@ -32,7 +32,7 @@ function Home() {
 					{/* <Selector /> */}
 				</div>
 				<div className="pb-12">
-					<CodeBlock code={code} />
+					<CodeBlocker code={code} />
 				</div>
 			</div>
 		</Background>

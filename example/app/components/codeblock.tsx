@@ -1,14 +1,14 @@
 import { Card, CardBody } from "@nextui-org/react";
-import { CopyBlock } from "react-code-blocks";
+import { CodeBlock } from "react-code-blocks";
 
-export const CodeBlock = ({
+export const CodeBlocker = ({
 	code,
 	language = "javascript",
 }: { code: string; language?: string }) => {
 	return (
 		<Card className="w-full">
 			<CardBody className="p-4">
-				<CopyBlock
+				<CodeBlock
 					text={code}
 					language={language}
 					showLineNumbers={false}
