@@ -3,19 +3,21 @@ import type {
 	ChatCompletionMessageToolCall,
 } from "openai/resources/chat/completions";
 import { getProviders } from "./providers";
+import type { z } from "zod";
+import { zodToJsonSchema } from "zod-to-json-schema";
+import { getTopStoriesInput } from "./providers/hacker-news";
 
 export * from "./providers";
 
-export type JSONSchema = Record<string, unknown>;
-
-export type Tool = {
+export type Tool<
+	TInput extends z.ZodSchema = z.ZodSchema,
+	TOutput extends z.ZodSchema = z.ZodSchema,
+> = {
 	name: string;
 	description: string;
-	inputSchema: JSONSchema;
-	outputSchema: JSONSchema;
-	// TODO: figure out how to give this the typing matching
-	// the input and output schema
-	fn: (args: unknown) => Promise<unknown>;
+	inputSchema: TInput;
+	outputSchema: TOutput;
+	fn: (args: z.infer<TInput>) => Promise<z.infer<TOutput>>;
 };
 
 export interface ToolProvider {
@@ -36,10 +38,14 @@ export async function discoverTools(providerNames: string[]): Promise<Tool[]> {
 }
 
 function toolToOpenAIFormat(tool: Tool): ChatCompletionTool {
+	// console.log("input", tool.inputSchema);
+	// console.log("output", tool.outputSchema);
 	return {
 		type: "function",
 		function: {
-			parameters: tool.inputSchema,
+			// parameters: zodToJsonSchema(tool.inputSchema, tool.name),
+			// parameters: zodToJsonSchema(tool.inputSchema),
+			parameters: zodToJsonSchema(getTopStoriesInput),
 			description: tool.description,
 			name: tool.name,
 		},
@@ -49,6 +55,7 @@ function toolToOpenAIFormat(tool: Tool): ChatCompletionTool {
 export function toOpenAIFormat(...tools: Tool[]): ChatCompletionTool[] {
 	return tools.map(toolToOpenAIFormat);
 }
+
 export async function callTools(
 	tools: Tool[],
 	toolCalls: ChatCompletionMessageToolCall[],
