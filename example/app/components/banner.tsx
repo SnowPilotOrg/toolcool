@@ -8,11 +8,11 @@ export const Banner = () => {
 		<div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center sm:justify-between">
 			<div className="flex flex-col gap-4">
 				<h1 className="text-4xl font-bold">Toolcool</h1>
-				<h2 className="text-lg font-light">Tool calling for every SaSS app</h2>
+				<h2 className="text-lg font-light">Tool calling for every API</h2>
 			</div>
 			<div className="flex flex-col gap-4 sm:items-end items-start">
 				{/* TODO: Add link to the package */}
-				<Snippet>npm install toolcool</Snippet>
+				<Snippet>npm install @snowpilot/tool-cool</Snippet>
 				<Button
 					startContent={<FontAwesomeIcon icon={faGithub} />}
 					variant="light"
