@@ -18,8 +18,9 @@ export const Recommendations = ({
 				prompt: "Summarize the most interesting discussions",
 			},
 			{
-				text: "Top Posts",
-				prompt: "What are the most upvoted posts today?",
+				text: "Top Products",
+				prompt:
+					"What are the most upvoted products on Product Hunt and Hacker News today?",
 			},
 		].map(({ text, prompt }) => (
 			<Button

@@ -1,6 +1,7 @@
 import {
 	callTools,
 	hackerNewsTools,
+	productHuntTools,
 	toOpenAIFormat,
 } from "@snowpilot/toolcool";
 import { createServerFn } from "@tanstack/start";
@@ -8,6 +9,7 @@ import OpenAI from "openai";
 import { z } from "zod";
 import { openAiMessagesSchema, toolCallSchema } from "../lib/types";
 
+const tools = [...hackerNewsTools, ...productHuntTools];
 const openai = new OpenAI();
 
 export const toolChat = createServerFn()
@@ -29,7 +31,7 @@ export const toolChat = createServerFn()
 					tool_call_id: msg.tool_call_id,
 				})) as OpenAI.Chat.Completions.ChatCompletionMessageParam[],
 				model: "gpt-4o-mini",
-				tools: toOpenAIFormat(hackerNewsTools),
+				tools: toOpenAIFormat(tools),
 				tool_choice: "auto",
 				n: 1,
 			});
@@ -49,7 +51,7 @@ export const ToolCall = createServerFn()
 		}),
 	)
 	.handler(async (ctx) => {
-		const result = await callTools(hackerNewsTools, [ctx.data.tool_call]);
+		const result = await callTools(tools, [ctx.data.tool_call]);
 		return {
 			role: "tool",
 			content: JSON.stringify(result),

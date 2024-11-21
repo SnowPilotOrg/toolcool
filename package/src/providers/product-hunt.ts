@@ -50,8 +50,22 @@ export const graphQLOutput = z.object({
 
 const queryProductHuntTool: Tool = {
 	name: "queryProductHunt",
-	description:
-		"Query Product Hunt's GraphQL API to fetch data about posts, collections, topics, and users",
+	description: `Query Product Hunt's GraphQL API to fetch data about posts, collections, topics, and users.
+Example query structure for posts:
+{
+  posts(first: 5) {
+    edges {
+      node {
+        id
+        name
+        tagline
+        url
+        votesCount
+        commentsCount
+      }
+    }
+  }
+}`,
 	inputSchema: graphQLInput,
 	outputSchema: graphQLOutput,
 	fn: async (args) => {
@@ -65,8 +79,8 @@ const queryProductHuntTool: Tool = {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				"Accept": "application/json",
-				"Authorization": `Bearer ${process.env.PRODUCT_HUNT_API_TOKEN}`,
+				Accept: "application/json",
+				Authorization: `Bearer ${process.env.PRODUCT_HUNT_API_TOKEN}`,
 			},
 			body: JSON.stringify({
 				query: args.query,
@@ -81,21 +95,21 @@ const queryProductHuntTool: Tool = {
 
 		if (!response.ok) {
 			throw new Error(
-				`Product Hunt API request failed: ${response.statusText}\nResponse: ${JSON.stringify(data, null, 2)}`
+				`Product Hunt API request failed: ${response.statusText}\nResponse: ${JSON.stringify(data, null, 2)}`,
 			);
 		}
 
 		// Handle GraphQL errors
 		if (data.errors) {
 			throw new Error(
-				`GraphQL Errors: ${JSON.stringify(data.errors, null, 2)}`
+				`GraphQL Errors: ${JSON.stringify(data.errors, null, 2)}`,
 			);
 		}
 
 		// Ensure data exists before parsing
 		if (!data.data) {
 			throw new Error(
-				`Invalid response format: ${JSON.stringify(data, null, 2)}`
+				`Invalid response format: ${JSON.stringify(data, null, 2)}`,
 			);
 		}
 
