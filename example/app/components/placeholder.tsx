@@ -20,7 +20,7 @@ export const Placeholder = () => {
 				/>
 			</div>
 
-			<p className="text-lg text-gray-600">Find what's popping</p>
+			<p className="text-gray-600 text-lg">Find what's popping</p>
 		</div>
 	);
 };

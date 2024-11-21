@@ -2,7 +2,7 @@ import { Button } from "@nextui-org/button";
 import { Card, CardBody } from "@nextui-org/card";
 import { Input } from "@nextui-org/input";
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
-import { ArrowUpIcon, RefreshCcwIcon, XIcon } from "lucide-react";
+import { ArrowUpIcon, RefreshCcwIcon } from "lucide-react";
 import { useState } from "react";
 import { LoadingMessage, Message } from "~/components/message";
 import type { MessageType } from "~/lib/types";
@@ -69,7 +69,7 @@ export const ChatWindow = () => {
 	};
 
 	return (
-		<Card className="w-full max-w-2xl  h-[600px] max-h-screen flex flex-col relative">
+		<Card className="relative flex h-[600px] max-h-screen w-full max-w-2xl flex-col">
 			{messages.length > 0 && (
 				<Button
 					isIconOnly
@@ -81,7 +81,7 @@ export const ChatWindow = () => {
 					<RefreshCcwIcon size={16} />
 				</Button>
 			)}
-			<CardBody className="p-4 flex flex-col gap-2">
+			<CardBody className="flex flex-col gap-2 p-4">
 				<ScrollShadow className="flex-grow">
 					<div className="flex flex-col gap-3">
 						{messages.map((message, index) => (
@@ -94,7 +94,7 @@ export const ChatWindow = () => {
 						{isLoading && <LoadingMessage />}
 					</div>
 					{messages.length === 0 && (
-						<div className="flex justify-center items-center h-full">
+						<div className="flex h-full items-center justify-center">
 							{<Placeholder />}
 						</div>
 					)}

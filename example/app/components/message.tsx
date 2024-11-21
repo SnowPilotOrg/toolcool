@@ -5,7 +5,7 @@ import type { MessageType } from "~/lib/types";
 export const LoadingMessage = () => {
 	return (
 		<div className="flex justify-start">
-			<div className="px-4 py-2 rounded-r-lg rounded-tl-lg bg-default-100">
+			<div className="rounded-r-lg rounded-tl-lg bg-default-100 px-4 py-2">
 				<LoadingDots />
 			</div>
 		</div>
@@ -48,7 +48,7 @@ export const Message = ({ message }: { message: MessageType }) => {
 						key={index}
 						userRole={false}
 					>
-						<CodeIcon className="inline-block mr-2" size={16} />
+						<CodeIcon className="mr-2 inline-block" size={16} />
 						<span className="font-bold">{tool_call.function.name}</span>
 					</MessageBubble>
 				))}

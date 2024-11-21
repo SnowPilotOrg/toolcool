@@ -11,9 +11,9 @@ import "~/main.css";
 function NotFound() {
 	return (
 		<div className="flex min-h-screen flex-col items-center justify-center">
-			<h1 className="text-4xl font-bold">404</h1>
+			<h1 className="font-bold text-4xl">404</h1>
 			<p className="mt-4 text-xl">Page not found</p>
-			<a href="/" className="mt-4 text-blue-500 hover:text-blue-600 underline">
+			<a href="/" className="mt-4 text-blue-500 underline hover:text-blue-600">
 				Go back home
 			</a>
 		</div>

@@ -4,7 +4,6 @@ import { Background } from "~/components/background";
 import { Banner } from "~/components/banner";
 import { ChatWindow } from "~/components/chat-window";
 import { CodeBlocker } from "~/components/codeblock";
-import { Selector } from "~/components/selector";
 
 export const Route = createFileRoute("/")({
 	component: Home,
@@ -25,7 +24,7 @@ return chatCompletion.choices[0].message;`;
 function Home() {
 	return (
 		<Background className="flex justify-center p-6 sm:pt-24">
-			<div className="flex flex-col gap-12 w-full max-w-2xl">
+			<div className="flex w-full max-w-2xl flex-col gap-12">
 				<Banner />
 				<div className="flex flex-col gap-4">
 					<ChatWindow />
