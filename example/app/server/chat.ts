@@ -2,13 +2,13 @@ import { createServerFn } from "@tanstack/start";
 import OpenAI from "openai";
 import { z } from "zod";
 import { openAiMessagesSchema, toolCallSchema } from "../lib/types";
-import { callTools, discoverTools, toOpenAIFormat } from "@snowpilot/tool-cool";
+import {
+	callTools,
+	hackerNewsTools,
+	toOpenAIFormat,
+} from "@snowpilot/tool-cool";
 
-async function makeOpenAiClient(): Promise<OpenAI> {
-	return new OpenAI({
-		apiKey: process.env.OPENAI_API_KEY,
-	});
-}
+const openai = new OpenAI();
 
 export const toolChat = createServerFn()
 	.validator(
@@ -18,13 +18,10 @@ export const toolChat = createServerFn()
 	)
 	.handler(async (ctx) => {
 		console.log("chat", ctx.data.messages[2]);
-		const client = await makeOpenAiClient();
 
-		const hnTools = await discoverTools(["hacker-news"]);
-		
 		try {
-			const chatCompletion = await client.chat.completions.create({
-				messages: ctx.data.messages.map(msg => ({
+			const chatCompletion = await openai.chat.completions.create({
+				messages: ctx.data.messages.map((msg) => ({
 					role: msg.role,
 					content: msg.content,
 					tool_calls: msg.tool_calls,
@@ -32,7 +29,7 @@ export const toolChat = createServerFn()
 					tool_call_id: msg.tool_call_id,
 				})) as OpenAI.Chat.Completions.ChatCompletionMessageParam[],
 				model: "gpt-4o-mini",
-				tools: toOpenAIFormat(...hnTools),
+				tools: toOpenAIFormat(hackerNewsTools),
 				tool_choice: "auto",
 				n: 1,
 			});
@@ -52,8 +49,7 @@ export const ToolCall = createServerFn()
 		}),
 	)
 	.handler(async (ctx) => {
-		const hnTools = await discoverTools(["hacker-news"]);
-		const result = await callTools(hnTools, [ctx.data.tool_call]);
+		const result = await callTools(hackerNewsTools, [ctx.data.tool_call]);
 		return {
 			role: "tool",
 			content: JSON.stringify(result),

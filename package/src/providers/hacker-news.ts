@@ -1,7 +1,7 @@
 import { z } from "zod";
 import type { Tool, ToolProvider } from "../index";
 
-export const getTopStoriesInput = z
+const getTopStoriesInput = z
 	.object({
 		limit: z
 			.number()
@@ -10,7 +10,7 @@ export const getTopStoriesInput = z
 	})
 	.describe("Input for the getTopStories tool");
 
-export const storySchema = z
+const storySchema = z
 	.object({
 		by: z.string().describe("The username of the author of the story"),
 		descendants: z.number().describe("The number of comments on the story"),
@@ -52,10 +52,7 @@ const getTopStoriesTool: Tool = {
 	},
 };
 
-export class HackerNewsProvider implements ToolProvider {
-	name = "hacker-news";
-
-	discoverTools(): Tool[] {
-		return [getTopStoriesTool];
-	}
-}
+export const hackerNewsProvider: ToolProvider = {
+	name: "hacker-news",
+	tools: [getTopStoriesTool],
+};

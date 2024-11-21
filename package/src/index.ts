@@ -4,7 +4,6 @@ import type {
 } from "openai/resources/chat/completions";
 import type { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
-import { getProviders } from "./providers";
 
 export * from "./providers";
 
@@ -21,19 +20,7 @@ export type Tool<
 
 export interface ToolProvider {
 	name: string;
-	discoverTools(): Promise<Tool[]> | Tool[];
-}
-
-export async function discoverTools(providerNames: string[]): Promise<Tool[]> {
-	const discoveredTools: Tool[] = [];
-
-	const providers = getProviders(providerNames);
-	for (const provider of providers.values()) {
-		const tools = await provider.discoverTools();
-		discoveredTools.push(...tools);
-	}
-
-	return discoveredTools;
+	tools: Tool[];
 }
 
 function toolToOpenAIFormat(tool: Tool): ChatCompletionTool {
@@ -50,7 +37,7 @@ function toolToOpenAIFormat(tool: Tool): ChatCompletionTool {
 	};
 }
 
-export function toOpenAIFormat(...tools: Tool[]): ChatCompletionTool[] {
+export function toOpenAIFormat(tools: Tool[]): ChatCompletionTool[] {
 	return tools.map(toolToOpenAIFormat);
 }
 
