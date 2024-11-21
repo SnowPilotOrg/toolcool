@@ -7,6 +7,19 @@ import { Meta, Scripts } from "@tanstack/start";
 import type { ReactNode } from "react";
 import { NextUIProvider } from "@nextui-org/react";
 import "~/main.css";
+import { ThemeProvider } from "styled-components";
+
+function NotFound() {
+	return (
+		<div className="flex min-h-screen flex-col items-center justify-center">
+			<h1 className="text-4xl font-bold">404</h1>
+			<p className="mt-4 text-xl">Page not found</p>
+			<a href="/" className="mt-4 text-blue-500 hover:text-blue-600 underline">
+				Go back home
+			</a>
+		</div>
+	);
+}
 
 export const Route = createRootRoute({
 	head: () => ({
@@ -22,13 +35,11 @@ export const Route = createRootRoute({
 				title: "TanStack Start Starter",
 			},
 		],
-
-		// links: [{ rel: "stylesheet", href: appCss }],
 	}),
 	component: RootComponent,
 	pendingComponent: () => <div>Loading...</div>,
 	errorComponent: () => <div>Error</div>,
-	notFoundComponent: () => <div>Not Found</div>,
+	notFoundComponent: NotFound,
 });
 
 function RootComponent() {
@@ -48,7 +59,9 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 				<Meta />
 			</head>
 			<body>
-				{children}
+				<NextUIProvider>
+					<Outlet />
+				</NextUIProvider>
 				<ScrollRestoration />
 				<Scripts />
 			</body>

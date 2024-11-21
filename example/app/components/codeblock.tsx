@@ -1,20 +1,27 @@
-import { Card, CardBody } from "@nextui-org/react";
-import { CodeBlock } from "react-code-blocks";
+import { Card } from "@nextui-org/card";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
-export const CodeBlocker = ({
-	code,
-	language = "javascript",
-}: { code: string; language?: string }) => {
+interface CodeBlockProps {
+	code: string;
+	language?: string;
+}
+
+export function CodeBlock({ code, language = "typescript" }: CodeBlockProps) {
 	return (
 		<Card className="w-full">
-			<CardBody className="p-4">
-				<CodeBlock
-					text={code}
-					language={language}
-					showLineNumbers={false}
-					wrapLongLines={true}
-				/>
-			</CardBody>
+			<SyntaxHighlighter
+				language={language}
+				showLineNumbers
+				customStyle={{
+					margin: 0,
+					borderRadius: 0,
+					fontSize: "0.875rem",
+					fontFamily: "monospace",
+					lineHeight: "1.5",
+				}}
+			>
+				{code}
+			</SyntaxHighlighter>
 		</Card>
 	);
-};
+}
