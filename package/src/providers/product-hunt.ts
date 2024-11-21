@@ -5,7 +5,7 @@ import type { Tool, ToolProvider } from "../index";
 // http://api-v2-docs.producthunt.com.s3-website-us-east-1.amazonaws.com/operation/query/
 // https://api.producthunt.com/v2/docs
 
-const graphQLInput = z
+export const graphQLInput = z
 	.object({
 		query: z.string().describe("The GraphQL query to execute"),
 		variables: z
@@ -27,7 +27,7 @@ const postSchema = z.object({
 	featured: z.boolean().describe("Whether the post is featured"),
 });
 
-const graphQLOutput = z.object({
+export const graphQLOutput = z.object({
 	data: z.record(z.any()).describe("The GraphQL response data"),
 	errors: z
 		.array(
@@ -55,17 +55,15 @@ const queryProductHuntTool: Tool = {
 	inputSchema: graphQLInput,
 	outputSchema: graphQLOutput,
 	fn: async (args) => {
-		if (!process.env.PRODUCT_HUNT_API_TOKEN) {
-			throw new Error(
-				"PRODUCT_HUNT_API_TOKEN environment variable is required",
-			);
+		if (!process.env.PRODUCT_HUNT_API_KEY) {
+			throw new Error("PRODUCT_HUNT_API_KEY environment variable is required");
 		}
 
 		const response = await fetch("https://api.producthunt.com/v2/api/graphql", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: `Bearer ${process.env.PRODUCT_HUNT_API_TOKEN}`,
+				Authorization: `Bearer ${process.env.PRODUCT_HUNT_API_KEY}`,
 			},
 			body: JSON.stringify({
 				query: args.query,
