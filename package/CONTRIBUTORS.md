@@ -11,6 +11,6 @@
   - `bun publish --dry-run` is used to check the package is ready to be published.
 
 - Version bumps:
-  - `bun version patch`  # 0.1.0 -> 0.1.1
-  - `bun version minor`  # 0.1.0 -> 0.2.0
-  - `bun version major`  # 0.1.0 -> 1.0.0
+  - `npm version patch`  # 0.1.0 -> 0.1.1
+  - `npm version minor`  # 0.1.0 -> 0.2.0
+  - `npm version major`  # 0.1.0 -> 1.0.0
