@@ -1,14 +1,18 @@
 // app.config.ts
-import { defineConfig } from '@tanstack/start/config'
-import viteTsConfigPaths from 'vite-tsconfig-paths'
+import { defineConfig } from "@tanstack/start/config";
+import viteTsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  vite: {
-    plugins: [
-      // this is the plugin that enables path aliases
-      viteTsConfigPaths({
-        projects: ['./tsconfig.json'],
-      }),
-    ],
-  },
-})
+	vite: {
+		plugins: [
+			// this is the plugin that enables path aliases
+			viteTsConfigPaths({
+				projects: ["./tsconfig.json"],
+			}),
+		],
+	},
+	server: {
+		// Nitro compatibility date
+		compatibilityDate: "2024-11-20",
+	},
+});
