@@ -1,6 +1,6 @@
-import type { MessageType } from "~/lib/types";
-import { LoadingDots } from "~/components/loading-dots";
 import { CodeIcon } from "lucide-react";
+import { LoadingDots } from "~/components/loading-dots";
+import type { MessageType } from "~/lib/types";
 
 export const LoadingMessage = () => {
 	return (

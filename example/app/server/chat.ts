@@ -1,12 +1,12 @@
-import { createServerFn } from "@tanstack/start";
-import OpenAI from "openai";
-import { z } from "zod";
-import { openAiMessagesSchema, toolCallSchema } from "../lib/types";
 import {
 	callTools,
 	hackerNewsTools,
 	toOpenAIFormat,
 } from "@snowpilot/tool-cool";
+import { createServerFn } from "@tanstack/start";
+import OpenAI from "openai";
+import { z } from "zod";
+import { openAiMessagesSchema, toolCallSchema } from "../lib/types";
 
 const openai = new OpenAI();
 

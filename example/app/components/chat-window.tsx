@@ -1,12 +1,12 @@
-import { Card, CardBody } from "@nextui-org/card";
-import { ScrollShadow } from "@nextui-org/scroll-shadow";
-import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
-import { useState } from "react";
-import { ToolCall, toolChat } from "~/server/chat";
-import type { MessageType } from "~/lib/types";
-import { LoadingMessage, Message } from "~/components/message";
+import { Card, CardBody } from "@nextui-org/card";
+import { Input } from "@nextui-org/input";
+import { ScrollShadow } from "@nextui-org/scroll-shadow";
 import { ArrowUpIcon, RefreshCcwIcon, XIcon } from "lucide-react";
+import { useState } from "react";
+import { LoadingMessage, Message } from "~/components/message";
+import type { MessageType } from "~/lib/types";
+import { ToolCall, toolChat } from "~/server/chat";
 import { Placeholder } from "./placeholder";
 import { Recommendations } from "./recommendations";
 

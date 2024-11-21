@@ -1,3 +1,4 @@
+import { NextUIProvider } from "@nextui-org/react";
 import {
 	Outlet,
 	ScrollRestoration,
@@ -5,9 +6,7 @@ import {
 } from "@tanstack/react-router";
 import { Meta, Scripts } from "@tanstack/start";
 import type { ReactNode } from "react";
-import { NextUIProvider } from "@nextui-org/react";
 import "~/main.css";
-import { ThemeProvider } from "styled-components";
 
 function NotFound() {
 	return (

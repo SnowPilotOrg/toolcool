@@ -1,13 +1,13 @@
 {
-  "editor.defaultFormatter": "biomejs.biome",
-  "typescript.tsdk": "./node_modules/typescript/lib",
-  "biome.lspBin": "./node_modules/@biomejs/biome/bin/biome",
-  "biome.requireConfiguration": true,
-  "biome.useGlobalBiome": false,
-  "editor.codeActionsOnSave": {
-    "quickfix.biome": "explicit",
-    "source.organizeImports.biome": "never"
-  },
+	"editor.defaultFormatter": "biomejs.biome",
+	"typescript.tsdk": "./node_modules/typescript/lib",
+	"biome.lspBin": "./node_modules/@biomejs/biome/bin/biome",
+	"biome.requireConfiguration": true,
+	"biome.useGlobalBiome": false,
+	"editor.codeActionsOnSave": {
+		"quickfix.biome": "explicit",
+		"source.organizeImports.biome": "never"
+	},
 	"typescript.preferences.importModuleSpecifier": "non-relative",
 	"typescript.enablePromptUseWorkspaceTsdk": true,
 	"typescript.updateImportsOnFileMove.enabled": "prompt",

@@ -5,7 +5,10 @@
 		"dev": "vinxi dev",
 		"build": "vinxi build",
 		"start": "vinxi start",
-		"postinstall": "cd ../package && bun run build"
+		"postinstall": "cd ../package && bun run build",
+		"format": "biome format --fix .",
+		"lint": "biome check --fix .",
+		"lint:unsafe": "biome check --fix --unsafe ."
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-svg-core": "^6.7.1",

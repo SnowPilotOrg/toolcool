@@ -1,7 +1,7 @@
-import { Snippet } from "@nextui-org/react";
-import { Button } from "@nextui-org/button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Button } from "@nextui-org/button";
+import { Snippet } from "@nextui-org/react";
 
 export const Banner = () => {
 	return (

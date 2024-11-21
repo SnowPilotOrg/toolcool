@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { Background } from "~/components/background";
-import { ChatWindow } from "~/components/chat-window";
-import { Selector } from "~/components/selector";
-import { CodeBlocker } from "~/components/codeblock";
 import { Banner } from "~/components/banner";
+import { ChatWindow } from "~/components/chat-window";
+import { CodeBlocker } from "~/components/codeblock";
+import { Selector } from "~/components/selector";
 
 export const Route = createFileRoute("/")({
 	component: Home,
