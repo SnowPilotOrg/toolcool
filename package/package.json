@@ -1,60 +1,63 @@
 {
-	"name": "@snowpilot/tool-cool",
-	"module": "./dist/index.js",
-	"version": "0.1.1",
-	"description": "Helpers to simplify LLM tool calls for popular APIs",
-	"license": "Apache-2.0",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/SnowPilotOrg/tool-cool"
-	},
-	"homepage": "https://github.com/SnowPilotOrg/tool-cool",
-	"bugs": {
-		"url": "https://github.com/SnowPilotOrg/tool-cool/issues"
-	},
-	"author": "Snowpilot <founders@snowpilot.com>",
-	"keywords": [
-		"zod",
-		"schema",
-		"typescript",
-		"hubspot",
-		"saas",
-		"api",
-		"tool call",
-		"openai"
-	],
-	"main": "./dist/index.js",
-	"types": "./dist/index.d.ts",
-	"scripts": {
-		"build": "rm -rf ./dist && bun build ./src/index.ts --outdir ./dist && tsc --emitDeclarationOnly --declaration --outDir ./dist",
-		"typecheck": "tsc --noEmit",
-		"clean": "rm -rf ./dist",
-		"test": "bun test",
-		"format": "biome format --fix .",
-		"lint": "biome check --fix .",
-		"lint:unsafe": "biome check --fix --unsafe .",
-		"prepublishOnly": "npm run build"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^1.9.4",
-		"@types/bun": "^1.1.13",
-		"@types/node": "^22.9.0",
-		"bun-types": "^1.1.36",
-		"openai": "^4.72.0",
-		"zod": "^3.23.8"
-	},
-	"peerDependencies": {
-		"typescript": "^5.6.3",
-		"openai": "^4.72.0",
-		"zod": "^3.23.8"
-	},
-	"dependencies": {
-		"zod-to-json-schema": "^3.23.5"
-	},
-	"exports": {
-		".": {
-			"types": "./dist/index.d.ts",
-			"import": "./dist/index.js"
-		}
-	}
+  "name": "@snowpilot/tool-cool",
+  "module": "./dist/index.js",
+  "version": "0.1.1",
+  "description": "Helpers to simplify LLM tool calls for popular APIs",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SnowPilotOrg/tool-cool"
+  },
+  "homepage": "https://github.com/SnowPilotOrg/tool-cool",
+  "bugs": {
+    "url": "https://github.com/SnowPilotOrg/tool-cool/issues"
+  },
+  "author": "Snowpilot <founders@snowpilot.com>",
+  "keywords": [
+    "zod",
+    "schema",
+    "typescript",
+    "hubspot",
+    "saas",
+    "api",
+    "tool call",
+    "openai"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "rm -rf ./dist && bun build ./src/index.ts --outdir ./dist && tsc --emitDeclarationOnly --declaration --outDir ./dist",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf ./dist",
+    "test": "bun test",
+    "format": "biome format --fix .",
+    "lint": "biome check --fix .",
+    "lint:unsafe": "biome check --fix --unsafe .",
+    "prepublishOnly": "npm run build"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/bun": "^1.1.13",
+    "@types/node": "^22.9.1",
+    "bun-types": "^1.1.36",
+    "openai": "^4.73.0",
+    "zod": "^3.23.8"
+  },
+  "peerDependencies": {
+    "typescript": "^5.6.3",
+    "openai": "^4.72.0",
+    "zod": "^3.23.8"
+  },
+  "dependencies": {
+    "zod-to-json-schema": "^3.23.5"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "trustedDependencies": [
+    "@biomejs/biome"
+  ]
 }
