@@ -55,15 +55,18 @@ const queryProductHuntTool: Tool = {
 	inputSchema: graphQLInput,
 	outputSchema: graphQLOutput,
 	fn: async (args) => {
-		if (!process.env.PRODUCT_HUNT_API_KEY) {
-			throw new Error("PRODUCT_HUNT_API_KEY environment variable is required");
+		if (!process.env.PRODUCT_HUNT_API_TOKEN) {
+			throw new Error(
+				"PRODUCT_HUNT_API_TOKEN environment variable is required",
+			);
 		}
 
 		const response = await fetch("https://api.producthunt.com/v2/api/graphql", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: `Bearer ${process.env.PRODUCT_HUNT_API_KEY}`,
+				"Accept": "application/json",
+				"Authorization": `Bearer ${process.env.PRODUCT_HUNT_API_TOKEN}`,
 			},
 			body: JSON.stringify({
 				query: args.query,
@@ -71,14 +74,35 @@ const queryProductHuntTool: Tool = {
 			}),
 		});
 
+		const data = await response.json();
+
+		// Log the raw response for debugging
+		console.log("Product Hunt API Response:", JSON.stringify(data, null, 2));
+
 		if (!response.ok) {
 			throw new Error(
-				`Product Hunt API request failed: ${response.statusText}`,
+				`Product Hunt API request failed: ${response.statusText}\nResponse: ${JSON.stringify(data, null, 2)}`
 			);
 		}
 
-		const data = await response.json();
-		return graphQLOutput.parse(data);
+		// Handle GraphQL errors
+		if (data.errors) {
+			throw new Error(
+				`GraphQL Errors: ${JSON.stringify(data.errors, null, 2)}`
+			);
+		}
+
+		// Ensure data exists before parsing
+		if (!data.data) {
+			throw new Error(
+				`Invalid response format: ${JSON.stringify(data, null, 2)}`
+			);
+		}
+
+		return graphQLOutput.parse({
+			data: data.data,
+			errors: data.errors,
+		});
 	},
 };
 
