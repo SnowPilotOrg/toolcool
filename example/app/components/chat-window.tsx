@@ -16,6 +16,7 @@ export const ChatWindow = () => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleSend = async (prompt?: string) => {
+		// TODO: this is a bit of a hack to avoid mutating the original messages array
 		const localMessages = [...messages];
 		const messageText = prompt || inputText;
 		if (!messageText.trim()) return;

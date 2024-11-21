@@ -53,11 +53,7 @@ export const ToolCall = createServerFn()
 	)
 	.handler(async (ctx) => {
 		const hnTools = await discoverTools(["hacker-news"]);
-		console.log("tool calls", ctx);
-		console.log("hn tools", hnTools);
 		const result = await callTools(hnTools, [ctx.data.tool_call]);
-		console.log("result", result);
-
 		return {
 			role: "tool",
 			content: JSON.stringify(result),
