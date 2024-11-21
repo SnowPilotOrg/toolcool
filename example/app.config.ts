@@ -1,11 +1,14 @@
 // app.config.ts
 import { defineConfig } from "@tanstack/start/config";
 import viteTsConfigPaths from "vite-tsconfig-paths";
+import viteReact from "@vitejs/plugin-react";
+import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 
 export default defineConfig({
 	vite: {
 		plugins: [
-			// this is the plugin that enables path aliases
+			TanStackRouterVite(),
+			viteReact(),
 			viteTsConfigPaths({
 				projects: ["./tsconfig.json"],
 			}),
