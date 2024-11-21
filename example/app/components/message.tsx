@@ -1,7 +1,7 @@
-import { CodeIcon } from "lucide-react";
 import { LoadingDots } from "~/components/loading-dots";
 import type { MessageType } from "~/lib/types";
 import { BrandIcon } from "./brand-icon";
+import ReactMarkdown from "react-markdown";
 
 export const LoadingMessage = () => {
 	return (
@@ -61,7 +61,13 @@ export const Message = ({ message, loading }: { message: MessageType; loading: b
 
 	return (
 		<MessageBubble userRole={message.role === "user"}>
-			{message.content}
+			{message.role === "user" ? (
+				message.content
+			) : (
+				<ReactMarkdown className="prose prose-sm">
+					{message.content}
+				</ReactMarkdown>
+			)}
 		</MessageBubble>
 	);
 };
