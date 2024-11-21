@@ -16,8 +16,6 @@ export const ChatWindow = () => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleSend = async (prompt?: string) => {
-		// TODO: this is a bit of a hack to avoid mutating the original messages array
-		const localMessages = [...messages];
 		const messageText = prompt || inputText;
 		if (!messageText.trim()) return;
 
@@ -26,41 +24,49 @@ export const ChatWindow = () => {
 			role: "user" as const,
 		};
 
-		localMessages.push(newMessage);
-		setMessages((prev) => [...prev, newMessage]);
+		setMessages(prev => [...prev, newMessage]);
 		setInputText("");
 		setIsLoading(true);
 
-		const response = await toolChat({
-			data: { messages: localMessages },
-		});
-		if (response) {
-			localMessages.push(response as MessageType);
-			setMessages((prev) => [...prev, response as MessageType]);
-		}
-		if (response?.tool_calls) {
-			const toolCallResults = await Promise.all(
-				response.tool_calls.map((toolCall) =>
-					ToolCall({
-						data: { tool_call: toolCall },
-					}),
-				),
-			);
-			localMessages.push(...(toolCallResults as MessageType[]));
-			setMessages((prev) => [...prev, ...(toolCallResults as MessageType[])]);
-			console.log("localMessages", localMessages);
-			// TODO: might want to do this recursively
-			const res2 = await toolChat({
-				data: {
-					messages: localMessages,
-				},
+		try {
+			const initialResponse = await toolChat({
+				data: { messages: [...messages, newMessage] },
 			});
-			if (res2) {
-				localMessages.push(res2 as MessageType);
-				setMessages((prev) => [...prev, res2 as MessageType]);
+			
+			if (initialResponse) {
+				setMessages(prev => [...prev, initialResponse as MessageType]);
 			}
+
+			if (initialResponse?.tool_calls) {
+				const toolCallResults = await Promise.all(
+					initialResponse.tool_calls.map((toolCall) =>
+						ToolCall({
+							data: { tool_call: toolCall },
+						}),
+					),
+				) as MessageType[];
+				
+				setMessages(prev => [...prev, ...toolCallResults]);
+
+				// Get AI's response to the tool call results
+				const followUpResponse = await toolChat({
+					data: {
+						messages: [
+							...messages,
+							newMessage,
+							initialResponse as MessageType,
+							...toolCallResults
+						],
+					},
+				});
+
+				if (followUpResponse) {
+					setMessages(prev => [...prev, followUpResponse as MessageType]);
+				}
+			}
+		} finally {
+			setIsLoading(false);
 		}
-		setIsLoading(false);
 	};
 
 	const handleReset = () => {
