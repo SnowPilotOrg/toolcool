@@ -32,6 +32,82 @@ describe("Product Hunt Provider", () => {
 		expect(result.data.posts.edges.length).toBe(1);
 		expect(result.data.posts.edges[0].node.id).toBeDefined();
 	});
+
+	test("should fetch collections", async () => {
+		if (!process.env.PRODUCT_HUNT_API_TOKEN) {
+			console.log("Skipping test - no API token");
+			return;
+		}
+
+		const collectionsQuery = productHuntProvider.tools.find(
+			(t) => t.name === "graphql_collections",
+		);
+		expect(collectionsQuery).toBeDefined();
+		if (!collectionsQuery) throw new Error("Collections query not found");
+
+		const result = await collectionsQuery.fn({
+			first: 1,
+		});
+
+		console.log("Collections result:", JSON.stringify(result, null, 2));
+	});
+
+	test("should fetch topics", async () => {
+		if (!process.env.PRODUCT_HUNT_API_TOKEN) {
+			console.log("Skipping test - no API token");
+			return;
+		}
+
+		const topicsQuery = productHuntProvider.tools.find(
+			(t) => t.name === "graphql_topics",
+		);
+		expect(topicsQuery).toBeDefined();
+		if (!topicsQuery) throw new Error("Topics query not found");
+
+		const result = await topicsQuery.fn({
+			first: 1,
+		});
+
+		console.log("Topics result:", JSON.stringify(result, null, 2));
+	});
+
+	test("should handle OpenAI tool calls for different types", async () => {
+		if (!process.env.PRODUCT_HUNT_API_TOKEN) {
+			console.log("Skipping test - no API token");
+			return;
+		}
+
+		const openai = new OpenAI();
+
+		// Test different prompts that will trigger different types
+		const prompts = [
+			"Show me some Product Hunt collections",
+			"What topics are trending on Product Hunt?",
+			"Show me the latest posts on Product Hunt",
+		];
+
+		for (const prompt of prompts) {
+			const completion = await openai.chat.completions.create({
+				model: "gpt-4",
+				messages: [{ role: "user", content: prompt }],
+				tools: toOpenAIFormat(productHuntProvider.tools),
+				tool_choice: "auto",
+			});
+
+			console.log(
+				`OpenAI Response for "${prompt}":`,
+				JSON.stringify(completion.choices[0].message, null, 2),
+			);
+
+			const results = await callTools(
+				productHuntProvider.tools,
+				completion.choices[0].message.tool_calls || [],
+			);
+
+			expect(results).toBeDefined();
+			expect(results.length).toBe(1);
+		}
+	});
 });
 
 test("Use OpenAI tool calling", async () => {
