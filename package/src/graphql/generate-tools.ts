@@ -66,24 +66,26 @@ function generateZodSchema(type: TypeNode): z.ZodTypeAny {
 }
 
 function generateArgString(args: Record<string, unknown>): string {
-	const usedArgs = Object.entries(args).filter(([_, value]) => value !== undefined);
-	if (!usedArgs.length) return '';
-	
+	const usedArgs = Object.entries(args).filter(
+		([_, value]) => value !== undefined,
+	);
+	if (!usedArgs.length) return "";
+
 	const argStrings = usedArgs.map(([key]) => `${key}: $${key}`);
-	return `(${argStrings.join(', ')})`;
+	return `(${argStrings.join(", ")})`;
 }
 
 function generateVariableDefinitions(
 	field: FieldDefinitionNode,
-	usedVariables: string[]
+	usedVariables: string[],
 ): string {
-	if (!field.arguments?.length) return '';
-	
+	if (!field.arguments?.length) return "";
+
 	const args = field.arguments
-		.filter(arg => usedVariables.includes(arg.name.value))
-		.map(arg => `$${arg.name.value}: ${getGraphQLType(arg.type)}`);
-	
-	return args.length ? `(${args.join(', ')})` : '';
+		.filter((arg) => usedVariables.includes(arg.name.value))
+		.map((arg) => `$${arg.name.value}: ${getGraphQLType(arg.type)}`);
+
+	return args.length ? `(${args.join(", ")})` : "";
 }
 
 function getGraphQLType(type: TypeNode): string {
@@ -121,7 +123,7 @@ export function generateToolsFromSchema(
 		const argFields: Record<string, z.ZodTypeAny> = {};
 		for (const arg of field.arguments || []) {
 			// Only include pagination and basic filtering arguments
-			if (['first', 'after', 'before', 'last'].includes(arg.name.value)) {
+			if (["first", "after", "before", "last"].includes(arg.name.value)) {
 				argFields[arg.name.value] = generateZodSchema(arg.type);
 			}
 		}
@@ -132,9 +134,11 @@ export function generateToolsFromSchema(
 				[fieldName]: z.object({
 					edges: z.array(
 						z.object({
-							node: z.object({
-								id: z.string(),
-							}).passthrough(),
+							node: z
+								.object({
+									id: z.string(),
+								})
+								.passthrough(),
 						}),
 					),
 				}),
@@ -148,7 +152,9 @@ export function generateToolsFromSchema(
 			inputSchema: z.object(argFields),
 			outputSchema,
 			fn: async (args) => {
-				const usedVariables = Object.keys(args).filter(key => args[key] !== undefined);
+				const usedVariables = Object.keys(args).filter(
+					(key) => args[key] !== undefined,
+				);
 				const query = `
           query ${fieldName}${generateVariableDefinitions(field, usedVariables)} {
             ${fieldName}${generateArgString(args)} {
