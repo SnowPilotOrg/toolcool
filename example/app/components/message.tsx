@@ -2,6 +2,7 @@ import { LoadingDots } from "~/components/loading-dots";
 import type { MessageType } from "~/lib/types";
 import { BrandIcon } from "./brand-icon";
 import ReactMarkdown from "react-markdown";
+import { hackerNewsTools, productHuntTools } from "@snowpilot/toolcool"
 
 export const LoadingMessage = () => {
 	return (
@@ -39,7 +40,7 @@ export const Message = ({ message, loading }: { message: MessageType; loading: b
 	if (message.role === "tool") {
 		return <></>;
 	}
-
+	console.log(hackerNewsTools, productHuntTools);
 	if (message.tool_calls) {
 		return (
 			<>
@@ -49,7 +50,13 @@ export const Message = ({ message, loading }: { message: MessageType; loading: b
 						key={index}
 						userRole={false}
 					>
-						<BrandIcon brand="hacker-news" className="mr-2 inline-block" />
+						{/* TODO: This is a hack to get the brand icon to show up. We need to find a better way to do this. */}
+						{hackerNewsTools.some(tool => tool.name === tool_call.function.name) && (
+							<BrandIcon brand="hacker-news" className="mr-2 inline-block" />
+						)}
+						{productHuntTools.some(tool => tool.name === tool_call.function.name) && (
+							<BrandIcon brand="product-hunt" className="mr-2 inline-block" />
+						)}
 						<span className={`${loading ? "animate-pulse" : ""}`}>
 							{tool_call.function.name}
 						</span>

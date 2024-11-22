@@ -38,6 +38,8 @@ export const ChatWindow = () => {
 			}
 
 			if (initialResponse?.tool_calls) {
+				console.log("tool calls", initialResponse.tool_calls);
+
 				const toolCallResults = await Promise.all(
 					initialResponse.tool_calls.map((toolCall) =>
 						ToolCall({
