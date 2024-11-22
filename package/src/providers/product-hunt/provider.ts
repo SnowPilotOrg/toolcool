@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
-import { generateToolsFromSchema } from "../../graphql/generate-tools";
-import type { ToolProvider } from "../../index";
+import { generateToolsFromSchema } from "~/graphql/generate-tools";
+import type { ToolProvider } from "~/index";
 
 const schema = readFileSync("./schema.graphql", "utf-8");
 

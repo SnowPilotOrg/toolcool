@@ -32,7 +32,10 @@
 		"emitDeclarationOnly": true,
 
 		// Other
-		"types": ["bun-types"]
+		"types": ["bun-types"],
+		"paths": {
+			"~/*": ["./src/*"]
+		}
 	},
 	"include": ["src/**/*", "index.d.ts"],
 	"exclude": ["test/**/*", "**/*.test.ts"]
