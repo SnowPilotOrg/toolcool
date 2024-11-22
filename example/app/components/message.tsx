@@ -1,8 +1,8 @@
+import { hackerNewsTools, productHuntTools } from "@snowpilot/toolcool";
+import ReactMarkdown from "react-markdown";
 import { LoadingDots } from "~/components/loading-dots";
 import type { MessageType } from "~/lib/types";
 import { BrandIcon } from "./brand-icon";
-import ReactMarkdown from "react-markdown";
-import { hackerNewsTools, productHuntTools } from "@snowpilot/toolcool";
 
 export const LoadingMessage = () => {
 	return (

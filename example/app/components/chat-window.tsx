@@ -7,12 +7,12 @@ import { useCallback, useRef } from "react";
 import { LoadingMessage, Message } from "~/components/message";
 import { config } from "~/config/chat";
 import { useChatMessages } from "~/hooks/use-chat-messages";
-import { toolService } from "~/services/toolService";
+import { useInput } from "~/hooks/use-input";
 import { toolChat } from "~/server/chat";
+import { toolService } from "~/services/toolService";
+import { ChatErrorBoundary } from "./chat-error-boundary";
 import { Placeholder } from "./placeholder";
 import { Recommendations } from "./recommendations";
-import { ChatErrorBoundary } from "./chat-error-boundary";
-import { useInput } from "~/hooks/use-input";
 
 export const ChatWindow = () => {
 	const {

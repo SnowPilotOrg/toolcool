@@ -1,7 +1,7 @@
 import { describe, expect, test } from "bun:test";
-import { productHuntProvider } from "./provider";
 import OpenAI from "openai";
-import { toOpenAIFormat, callTools } from "../..";
+import { callTools, toOpenAIFormat } from "../..";
+import { productHuntProvider } from "./provider";
 
 describe("Product Hunt Provider", () => {
 	test("should generate tools from schema", () => {

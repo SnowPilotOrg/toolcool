@@ -6,9 +6,9 @@ import {
 } from "@snowpilot/toolcool";
 import { createServerFn } from "@tanstack/start";
 import OpenAI from "openai";
+import type { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 import { z } from "zod";
 import { openAiMessagesSchema, toolCallSchema } from "../lib/types";
-import type { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 
 const tools = [...hackerNewsTools, ...productHuntTools];
 const openai = new OpenAI();

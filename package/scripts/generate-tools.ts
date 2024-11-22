@@ -1,12 +1,12 @@
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
-	buildClientSchema,
-	printSchema,
-	parse,
+	type FieldDefinitionNode,
 	Kind,
 	type ObjectTypeDefinitionNode,
-	type FieldDefinitionNode,
+	buildClientSchema,
+	parse,
+	printSchema,
 } from "graphql";
 
 async function fetchSchema() {
@@ -131,7 +131,9 @@ function isScalarField(field: FieldDefinitionNode): boolean {
 	}
 	// Check if it's a scalar type
 	if (type.kind === Kind.NAMED_TYPE) {
-		return ["String", "Int", "Float", "Boolean", "ID"].includes(type.name.value);
+		return ["String", "Int", "Float", "Boolean", "ID"].includes(
+			type.name.value,
+		);
 	}
 	return false;
 }
@@ -221,7 +223,9 @@ const ${name.toLowerCase()}NodeSchema = ${generateNodeSchema(type)};`,
 			throw new Error(`Type ${baseTypeName} not found in schema`);
 		}
 
-		const scalarFields = type.fields?.filter(isScalarField).map((f) => f.name.value);
+		const scalarFields = type.fields
+			?.filter(isScalarField)
+			.map((f) => f.name.value);
 
 		return `{
 			name: "graphql_${fieldName}",

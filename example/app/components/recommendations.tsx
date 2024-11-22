@@ -29,7 +29,7 @@ export const Recommendations = ({
 			},
 		].map(({ brand, text, prompt }) => (
 			<Button
-				key={`${text}-${brand.join('-')}`}
+				key={`${text}-${brand.join("-")}`}
 				size="md"
 				variant="flat"
 				onClick={() => {

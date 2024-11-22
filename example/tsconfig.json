@@ -2,10 +2,7 @@
 	"compilerOptions": {
 		"forceConsistentCasingInFileNames": true,
 		// Enable latest features
-		"lib": [
-			"ESNext",
-			"DOM"
-		],
+		"lib": ["ESNext", "DOM"],
 		"target": "ES2022",
 		"module": "ESNext",
 		"moduleDetection": "force",
@@ -28,9 +25,7 @@
 		// Paths
 		"baseUrl": ".",
 		"paths": {
-			"~/*": [
-				"app/*"
-			]
+			"~/*": ["app/*"]
 		}
 	}
 }

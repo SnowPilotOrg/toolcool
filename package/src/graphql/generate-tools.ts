@@ -1,6 +1,6 @@
+import { type FieldDefinitionNode, Kind, type TypeNode, parse } from "graphql";
 import { z } from "zod";
 import type { Tool } from "../index";
-import { parse, Kind, type FieldDefinitionNode, type TypeNode } from "graphql";
 
 interface GraphQLConfig {
 	endpoint: string;

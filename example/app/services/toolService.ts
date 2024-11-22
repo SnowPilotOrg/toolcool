@@ -1,6 +1,6 @@
 import type { MessageType } from "~/lib/types";
-import { callTool } from "~/server/chat";
 import type { ToolCall } from "~/lib/types";
+import { callTool } from "~/server/chat";
 
 export type ToolExecutionResult = {
 	success: MessageType[];

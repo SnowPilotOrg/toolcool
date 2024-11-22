@@ -46,8 +46,10 @@
 	"files": {
 		"ignore": [
 			".million/**/*",
-			"node_modules/**/*",
+			".output/**/*",
 			".vinxi/**/*",
+			".vercel/**/*",
+			"node_modules/**/*",
 			"app/routeTree.gen.ts"
 		]
 	}
