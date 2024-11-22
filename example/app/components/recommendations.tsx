@@ -1,4 +1,4 @@
-import { Avatar, AvatarGroup, Button } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import { BrandIcon } from "./brand-icon";
 
 export const Recommendations = ({
@@ -14,18 +14,18 @@ export const Recommendations = ({
 			{
 				brand: ["product-hunt", "hacker-news"],
 				text: "Trending Topics",
-				prompt: "What are the top trending topics on hacker news and product hunt",
+				prompt:
+					"What are the top trending topics? Check both Hacker News and Product Hunt",
 			},
 			{
 				brand: ["hacker-news"],
 				text: "Interesting Discussions",
-				prompt: "Summarize the most interesting discussions on hacker news",
+				prompt: "Summarize the most interesting discussions on Hacker News",
 			},
 			{
 				brand: ["product-hunt"],
 				text: "Top Products",
-				prompt:
-					"What are the most upvoted products on Product Hunt today?",
+				prompt: "What are the most upvoted products on Product Hunt today?",
 			},
 		].map(({ brand, text, prompt }) => (
 			<Button
@@ -39,9 +39,7 @@ export const Recommendations = ({
 			>
 				<div className="flex gap-1">
 					{brand.map((b) => (
-						
-							<BrandIcon brand={b as "hacker-news" | "product-hunt"} />
-				
+						<BrandIcon brand={b as "hacker-news" | "product-hunt"} />
 					))}
 				</div>
 				{text}
