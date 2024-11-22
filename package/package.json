@@ -27,16 +27,15 @@
 	"types": "./dist/index.d.ts",
 	"scripts": {
 		"build": "rm -rf ./dist && bun build ./src/index.ts --outdir ./dist && tsc --emitDeclarationOnly --declaration --outDir ./dist",
+		"test": "bun test",
 		"typecheck": "tsc --noEmit",
 		"clean": "rm -rf ./dist",
-		"test": "bun test",
 		"format": "biome format --fix .",
 		"lint": "biome check --fix .",
 		"lint:unsafe": "biome check --fix --unsafe .",
-		"prepublishOnly": "npm run build",
-		"codegen": "graphql-codegen",
-		"fetch-schema": "bun run scripts/fetch-schema.ts",
-		"generate": "bun run fetch-schema && graphql-codegen"
+		"prepublishOnly": "bun run build",
+		"generate": "bun run scripts/generate-tools.ts",
+		"prepare": "bun run generate && bun run build"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
