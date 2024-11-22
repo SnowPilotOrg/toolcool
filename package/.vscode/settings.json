@@ -10,7 +10,7 @@
 	},
 	"typescript.preferences.importModuleSpecifier": "non-relative",
 	"typescript.enablePromptUseWorkspaceTsdk": true,
-	"typescript.updateImportsOnFileMove.enabled": "prompt",
+	"typescript.updateImportsOnFileMove.enabled": "always",
 	"javascript.updateImportsOnFileMove.enabled": "prompt",
 	"emmet.includeLanguages": {
 		"typescript": "typescriptreact",

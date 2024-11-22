@@ -27,19 +27,24 @@
 	"types": "./dist/index.d.ts",
 	"scripts": {
 		"build": "rm -rf ./dist && bun build ./src/index.ts --outdir ./dist && tsc --emitDeclarationOnly --declaration --outDir ./dist",
+		"test": "bun test",
 		"typecheck": "tsc --noEmit",
 		"clean": "rm -rf ./dist",
-		"test": "bun test",
 		"format": "biome format --fix .",
 		"lint": "biome check --fix .",
 		"lint:unsafe": "biome check --fix --unsafe .",
-		"prepublishOnly": "npm run build"
+		"prepublishOnly": "bun run build",
+		"generate": "bun run scripts/generate-tools.ts",
+		"prepare": "bun run generate && bun run build"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
+		"@graphql-codegen/cli": "^5.0.0",
+		"@graphql-codegen/typescript": "^4.0.0",
 		"@types/bun": "^1.1.13",
 		"@types/node": "^22.9.1",
 		"bun-types": "^1.1.36",
+		"graphql-codegen-typescript-validation-schema": "^0.13.0",
 		"openai": "^4.73.0",
 		"zod": "^3.23.8"
 	},
@@ -49,6 +54,7 @@
 		"zod": "^3.23.8"
 	},
 	"dependencies": {
+		"graphql": "^16.9.0",
 		"zod-to-json-schema": "^3.23.5"
 	},
 	"exports": {
