@@ -29,7 +29,7 @@ export const Recommendations = ({
 			},
 		].map(({ brand, text, prompt }) => (
 			<Button
-				key={text}
+				key={`${text}-${brand.join('-')}`}
 				size="md"
 				variant="flat"
 				onClick={() => {
@@ -39,7 +39,7 @@ export const Recommendations = ({
 			>
 				<div className="flex gap-1">
 					{brand.map((b) => (
-						<BrandIcon brand={b as "hacker-news" | "product-hunt"} />
+						<BrandIcon key={b} brand={b as "hacker-news" | "product-hunt"} />
 					))}
 				</div>
 				{text}
