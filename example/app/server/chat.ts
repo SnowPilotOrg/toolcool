@@ -8,28 +8,30 @@ import { createServerFn } from "@tanstack/start";
 import OpenAI from "openai";
 import { z } from "zod";
 import { openAiMessagesSchema, toolCallSchema } from "../lib/types";
+import type { ChatCompletionMessageParam } from "openai/resources/index.mjs";
 
 const tools = [...hackerNewsTools, ...productHuntTools];
 const openai = new OpenAI();
 
-export const toolChat = createServerFn()
+export const toolChat = createServerFn({
+	method: "POST",
+})
 	.validator(
 		z.object({
 			messages: openAiMessagesSchema,
-		}),
+		}).parse,
 	)
-	.handler(async (ctx) => {
-		console.log("chat", ctx.data.messages[2]);
+	.handler(async ({ data }) => {
+		const messagesToSend = data.messages.map((msg) => ({
+			role: msg.role,
+			content: msg.content,
+			tool_calls: msg.tool_calls,
+			tool_call_id: msg.tool_call_id,
+		})) as ChatCompletionMessageParam[];
 
 		try {
 			const chatCompletion = await openai.chat.completions.create({
-				messages: ctx.data.messages.map((msg) => ({
-					role: msg.role,
-					content: msg.content,
-					tool_calls: msg.tool_calls,
-					// @warrenbhw: this really tripped me up
-					tool_call_id: msg.tool_call_id,
-				})) as OpenAI.Chat.Completions.ChatCompletionMessageParam[],
+				messages: messagesToSend,
 				model: "gpt-4o-mini",
 				tools: toOpenAIFormat(tools),
 				tool_choice: "auto",
@@ -38,23 +40,28 @@ export const toolChat = createServerFn()
 
 			return chatCompletion.choices[0].message;
 		} catch (error) {
-			//TODO: handle error
-			console.log(error);
+			return {
+				error: {
+					message:
+						error instanceof Error ? error.message : "Chat completion failed",
+				},
+			};
 		}
 	});
 
-// TODO: stream the response in the original message
-export const ToolCall = createServerFn()
+export const ToolCall = createServerFn({
+	method: "POST",
+})
 	.validator(
 		z.object({
 			tool_call: toolCallSchema,
-		}),
+		}).parse,
 	)
-	.handler(async (ctx) => {
-		const result = await callTools(tools, [ctx.data.tool_call]);
+	.handler(async ({ data }) => {
+		const result = await callTools(tools, [data.tool_call]);
 		return {
 			role: "tool",
 			content: JSON.stringify(result),
-			tool_call_id: ctx.data.tool_call.id,
+			tool_call_id: data.tool_call.id,
 		};
 	});
