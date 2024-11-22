@@ -25,7 +25,7 @@ export interface ToolProvider {
 
 function toolToOpenAIFormat(tool: Tool): ChatCompletionTool {
 	const jsonSchema = zodToJsonSchema(tool.inputSchema);
-	console.debug("jsonSchema", jsonSchema);
+	// console.debug("jsonSchema", jsonSchema);
 
 	return {
 		type: "function",

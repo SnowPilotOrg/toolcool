@@ -1,5 +1,3 @@
-/// <reference types="bun-types" />
-
 import { expect, test } from "bun:test";
 import OpenAI from "openai";
 import { callTools, hackerNewsTools, toOpenAIFormat } from "../index";

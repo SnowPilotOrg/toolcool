@@ -1,19 +1,18 @@
-/// <reference types="bun-types" />
-
 import { expect, test } from "bun:test";
 import OpenAI from "openai";
 import { callTools, hackerNewsTools, toOpenAIFormat } from "../index";
-import { graphQLOutput, productHuntProvider } from "./product-hunt";
+import { productHuntProvider } from "./product-hunt";
 
 const { tools: productHuntTools } = productHuntProvider;
+const queryTool = productHuntTools[0];
+const outputSchema = queryTool.outputSchema;
+
 test("Product Hunt Tool - should fetch posts via GraphQL", async () => {
 	// Skip test if no API token is available
 	if (!process.env.PRODUCT_HUNT_API_TOKEN) {
 		console.log("Skipping Product Hunt test - no API token available");
 		return;
 	}
-
-	const queryTool = productHuntTools[0];
 
 	try {
 		const result = await queryTool.fn({
@@ -85,7 +84,7 @@ test("Product Hunt Tool - OpenAI integration", async () => {
 		expect(results).toBeDefined();
 		expect(results.length).toBeGreaterThan(0);
 
-		const phResult = graphQLOutput.parse(results[0]);
+		const phResult = outputSchema.parse(results[0]);
 		expect(phResult.data).toBeDefined();
 		expect(phResult.data).toHaveProperty("posts");
 		expect(phResult.errors).toBeUndefined();

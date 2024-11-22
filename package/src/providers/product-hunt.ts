@@ -1,74 +1,56 @@
 import { z } from "zod";
 import type { Tool, ToolProvider } from "../index";
-
-// references:
-// http://api-v2-docs.producthunt.com.s3-website-us-east-1.amazonaws.com/operation/query/
-// https://api.producthunt.com/v2/docs
-
-export const graphQLInput = z
-	.object({
-		query: z.string().describe("The GraphQL query to execute"),
-		variables: z
-			.record(z.any())
-			.optional()
-			.describe("Variables for the GraphQL query"),
-	})
-	.describe("The GraphQL query to read data from Product Hunt");
-
-const postSchema = z.object({
-	id: z.string().describe("The ID of the post"),
-	name: z.string().describe("The name of the post"),
-	tagline: z.string().describe("The tagline of the post"),
-	description: z.string().optional().describe("The description of the post"),
-	url: z.string().describe("The URL of the post"),
-	votesCount: z.number().describe("Number of votes"),
-	commentsCount: z.number().describe("Number of comments"),
-	createdAt: z.string().describe("When the post was created"),
-	featured: z.boolean().describe("Whether the post is featured"),
-});
-
-export const graphQLOutput = z.object({
-	data: z.record(z.any()).describe("The GraphQL response data"),
-	errors: z
-		.array(
-			z.object({
-				message: z.string(),
-				locations: z
-					.array(
-						z.object({
-							line: z.number(),
-							column: z.number(),
-						}),
-					)
-					.optional(),
-				path: z.array(z.string()).optional(),
-			}),
-		)
-		.optional()
-		.describe("Any errors that occurred during the query"),
-});
+import { PostsOrderSchema } from "../generated/validators";
 
 const queryProductHuntTool: Tool = {
 	name: "queryProductHunt",
-	description: `Query Product Hunt's GraphQL API to fetch data about posts, collections, topics, and users.
-Example query structure for posts:
-{
-  posts(first: 5) {
-    edges {
-      node {
-        id
-        name
-        tagline
-        url
-        votesCount
-        commentsCount
-      }
-    }
-  }
-}`,
-	inputSchema: graphQLInput,
-	outputSchema: graphQLOutput,
-	fn: async (args) => {
+	description: "Query Product Hunt's GraphQL API to fetch posts",
+	inputSchema: z.object({
+		query: z.union([
+			// Raw GraphQL query string
+			z.string(),
+			// Structured query object
+			z.object({
+				first: z.number().optional(),
+				after: z.string().optional(),
+				before: z.string().optional(),
+				featured: z.boolean().optional(),
+				order: PostsOrderSchema.optional(),
+				postedAfter: z.string().datetime().optional(),
+				postedBefore: z.string().datetime().optional(),
+				topic: z.string().optional(),
+				twitterUrl: z.string().optional(),
+				url: z.string().optional(),
+			}),
+		]),
+		variables: z.record(z.any()).optional(),
+	}),
+	outputSchema: z.object({
+		data: z.object({
+			posts: z.object({
+				edges: z.array(
+					z.object({
+						node: z.object({
+							id: z.string(),
+							name: z.string(),
+							tagline: z.string(),
+							url: z.string(),
+							votesCount: z.number(),
+							commentsCount: z.number(),
+						}),
+						cursor: z.string().optional(),
+					}),
+				),
+				pageInfo: z
+					.object({
+						hasNextPage: z.boolean(),
+						endCursor: z.string().optional(),
+					})
+					.optional(),
+			}),
+		}),
+	}),
+	fn: async ({ query, variables }) => {
 		if (!process.env.PRODUCT_HUNT_API_TOKEN) {
 			throw new Error(
 				"PRODUCT_HUNT_API_TOKEN environment variable is required",
@@ -82,16 +64,38 @@ Example query structure for posts:
 				Accept: "application/json",
 				Authorization: `Bearer ${process.env.PRODUCT_HUNT_API_TOKEN}`,
 			},
-			body: JSON.stringify({
-				query: args.query,
-				variables: args.variables || {},
-			}),
+			body: JSON.stringify(
+				typeof query === "string"
+					? { query } // For raw GraphQL queries
+					: {
+							// For structured queries
+							query: `
+								query Posts($first: Int, $after: String, $order: PostsOrder) {
+									posts(first: $first, after: $after, order: $order) {
+										edges {
+											node {
+												id
+												name
+												tagline
+												url
+												votesCount
+												commentsCount
+											}
+											cursor
+										}
+										pageInfo {
+											hasNextPage
+											endCursor
+										}
+									}
+								}
+							`,
+							variables: query,
+						},
+			),
 		});
 
 		const data = await response.json();
-
-		// Log the raw response for debugging
-		console.log("Product Hunt API Response:", JSON.stringify(data, null, 2));
 
 		if (!response.ok) {
 			throw new Error(
@@ -99,24 +103,13 @@ Example query structure for posts:
 			);
 		}
 
-		// Handle GraphQL errors
 		if (data.errors) {
 			throw new Error(
 				`GraphQL Errors: ${JSON.stringify(data.errors, null, 2)}`,
 			);
 		}
 
-		// Ensure data exists before parsing
-		if (!data.data) {
-			throw new Error(
-				`Invalid response format: ${JSON.stringify(data, null, 2)}`,
-			);
-		}
-
-		return graphQLOutput.parse({
-			data: data.data,
-			errors: data.errors,
-		});
+		return data;
 	},
 };
 
