@@ -1,9 +1,9 @@
-import type { MessageType } from "~/lib/types";
+import type { ChatCompletionMessage } from "~/lib/types";
 import type { ToolCall } from "~/lib/types";
 import { callTool } from "~/server/chat";
 
 export type ToolExecutionResult = {
-	success: MessageType[];
+	success: ChatCompletionMessage[];
 	errors: string[];
 };
 
@@ -32,7 +32,7 @@ export const toolService = {
 					return;
 				}
 
-				results.success.push(result as MessageType);
+				results.success.push(result as ChatCompletionMessage);
 			} catch (err) {
 				results.errors.push(
 					`${toolCall.function.name}: ${err instanceof Error ? err.message : "Failed"}`,

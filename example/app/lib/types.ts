@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const toolCallSchema = z.object({
+export const ToolCall = z.object({
 	id: z.string(),
 	function: z.object({
 		name: z.string(),
@@ -9,9 +9,9 @@ export const toolCallSchema = z.object({
 	type: z.literal("function"),
 });
 
-export type ToolCall = z.infer<typeof toolCallSchema>;
+export type ToolCall = z.infer<typeof ToolCall>;
 
-export const openAiMessageSchema = z.discriminatedUnion("role", [
+export const ChatCompletionMessage = z.discriminatedUnion("role", [
 	z.object({
 		role: z.literal("tool"),
 		content: z.string(),
@@ -35,14 +35,12 @@ export const openAiMessageSchema = z.discriminatedUnion("role", [
 			})
 			.nullable()
 			.optional(),
-		tool_calls: z.array(toolCallSchema).optional(),
+		tool_calls: z.array(ToolCall).optional(),
 		name: z.string().optional(),
 	}),
 ]);
 
-export type MessageType = z.infer<typeof openAiMessageSchema>;
-
-export const openAiMessagesSchema = z.array(openAiMessageSchema);
+export type ChatCompletionMessage = z.infer<typeof ChatCompletionMessage>;
 
 export type ErrorResponse = {
 	error: {

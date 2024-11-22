@@ -7,7 +7,7 @@ import {
 import { createServerFn } from "@tanstack/start";
 import OpenAI from "openai";
 import { z } from "zod";
-import { openAiMessagesSchema, toolCallSchema } from "../lib/types";
+import { ChatCompletionMessage, ToolCall } from "../lib/types";
 
 const tools = [...hackerNewsTools, ...productHuntTools];
 const openai = new OpenAI();
@@ -17,7 +17,7 @@ export const toolChat = createServerFn({
 })
 	.validator(
 		z.object({
-			messages: openAiMessagesSchema,
+			messages: z.array(ChatCompletionMessage),
 		}).parse,
 	)
 	.handler(async ({ data: { messages } }) => {
@@ -46,7 +46,7 @@ export const callTool = createServerFn({
 })
 	.validator(
 		z.object({
-			tool_call: toolCallSchema,
+			tool_call: ToolCall,
 		}).parse,
 	)
 	.handler(async ({ data: { tool_call } }) => {
