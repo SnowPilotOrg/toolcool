@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test";
 import OpenAI from "openai";
-import { callTools, hackerNewsTools, toOpenAIFormat } from "../index";
+import { callTools, hackerNewsTools, toOpenAIFormat } from "../../index";
 
 test("Hacker News Tool - should fetch top stories", async () => {
 	const openai = new OpenAI();

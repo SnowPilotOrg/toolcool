@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { z } from "zod";
-import { parseSchema } from "../graphql/schema-parser";
-import { generateQueryBuilders } from "../graphql/query-builder";
+import { parseSchema } from "../../graphql/schema-parser";
+import { generateQueryBuilders } from "../../graphql/query-builder";
 
 const schema = readFileSync("./schema.graphql", "utf-8");
 const types = parseSchema(schema);
@@ -53,12 +53,15 @@ const DEFAULT_USER_FIELDS = ["id", "name", "username"] as const;
 type PostFields = (typeof DEFAULT_POST_FIELDS)[number];
 type UserFields = (typeof DEFAULT_USER_FIELDS)[number];
 
-async function executeGraphQLQuery<T>(query: string, variables: Record<string, unknown>): Promise<T> {
+async function executeGraphQLQuery<T>(
+	query: string,
+	variables: Record<string, unknown>,
+): Promise<T> {
 	const response = await fetch("https://api.producthunt.com/v2/api/graphql", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
-			"Authorization": `Bearer ${process.env.PRODUCT_HUNT_API_TOKEN}`,
+			Authorization: `Bearer ${process.env.PRODUCT_HUNT_API_TOKEN}`,
 		},
 		body: JSON.stringify({
 			query,

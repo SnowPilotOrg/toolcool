@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { Tool, ToolProvider } from "../index";
+import type { Tool, ToolProvider } from "../../index";
 
 const getTopStoriesInput = z
 	.object({

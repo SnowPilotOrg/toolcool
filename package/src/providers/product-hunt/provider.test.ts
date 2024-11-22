@@ -1,7 +1,7 @@
 import { expect, test } from "bun:test";
 import OpenAI from "openai";
-import { callTools, hackerNewsTools, toOpenAIFormat } from "../index";
-import { productHuntProvider } from "./product-hunt";
+import { callTools, hackerNewsTools, toOpenAIFormat } from "../../index";
+import { productHuntProvider } from "./provider";
 
 const { tools: productHuntTools } = productHuntProvider;
 const queryTool = productHuntTools[0];
