@@ -13,7 +13,10 @@ const getTopStoriesInput = z
 const storySchema = z
 	.object({
 		by: z.string().describe("The username of the author of the story"),
-		descendants: z.number().describe("The number of comments on the story"),
+		descendants: z
+			.number()
+			.describe("The number of comments on the story")
+			.optional(),
 		kids: z
 			.array(z.number())
 			.optional()
