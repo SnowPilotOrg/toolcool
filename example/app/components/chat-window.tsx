@@ -6,13 +6,13 @@ import { ArrowUpIcon, RefreshCcwIcon } from "lucide-react";
 import { useCallback, useRef } from "react";
 import { LoadingMessage, Message } from "~/components/message";
 import { config } from "~/config/chat";
-import { useChatMessages } from "~/hooks/useChatMessages";
+import { useChatMessages } from "~/hooks/use-chat-messages";
 import { toolService } from "~/services/toolService";
 import { toolChat } from "~/server/chat";
 import { Placeholder } from "./placeholder";
 import { Recommendations } from "./recommendations";
-import { ChatErrorBoundary } from "./ChatErrorBoundary";
-import { useInput } from "~/hooks/useInput";
+import { ChatErrorBoundary } from "./chat-error-boundary";
+import { useInput } from "~/hooks/use-input";
 
 export const ChatWindow = () => {
 	const {
@@ -24,14 +24,20 @@ export const ChatWindow = () => {
 		addMessage,
 		addMessages,
 		removeLastMessage,
-		reset: resetMessages
+		reset: resetMessages,
 	} = useChatMessages();
 
-	const { value: inputText, setValue: setInputText, reset: resetInput } = useInput("");
+	const {
+		value: inputText,
+		setValue: setInputText,
+		reset: resetInput,
+	} = useInput("");
 	const messagesEndRef = useRef<HTMLDivElement>(null);
 
 	const scrollToBottom = useCallback(() => {
-		messagesEndRef.current?.scrollIntoView({ behavior: config.ui.scrollBehavior });
+		messagesEndRef.current?.scrollIntoView({
+			behavior: config.ui.scrollBehavior,
+		});
 	}, []);
 
 	const handleSend = async (prompt?: string) => {
@@ -53,16 +59,19 @@ export const ChatWindow = () => {
 				data: { messages: [...messages, userMessage] },
 			});
 
-			if (!initialResponse || 'error' in initialResponse) {
-				throw new Error('error' in initialResponse ? initialResponse.error.message : "No response received");
+			if (!initialResponse || "error" in initialResponse) {
+				throw new Error(
+					"error" in initialResponse
+						? initialResponse.error.message
+						: "No response received",
+				);
 			}
 
 			addMessage(initialResponse);
 
 			if (initialResponse.tool_calls?.length) {
-				const { success: toolResults, errors: toolErrors } = await toolService.executeToolCalls(
-					initialResponse.tool_calls
-				);
+				const { success: toolResults, errors: toolErrors } =
+					await toolService.executeToolCalls(initialResponse.tool_calls);
 
 				if (toolErrors.length > 0) {
 					setError(toolErrors.join("\n"));
@@ -83,7 +92,7 @@ export const ChatWindow = () => {
 							},
 						});
 
-						if (finalResponse && !('error' in finalResponse)) {
+						if (finalResponse && !("error" in finalResponse)) {
 							addMessage(finalResponse);
 						}
 					} catch (err) {
@@ -94,7 +103,9 @@ export const ChatWindow = () => {
 		} catch (error) {
 			console.error("Chat error:", error);
 			removeLastMessage();
-			setError(error instanceof Error ? error.message : "An unexpected error occurred");
+			setError(
+				error instanceof Error ? error.message : "An unexpected error occurred",
+			);
 		} finally {
 			setIsLoading(false);
 			scrollToBottom();
