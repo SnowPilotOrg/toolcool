@@ -29,13 +29,11 @@ export const BrandIcon = ({
 	const { icon, color } = iconConfig[brand];
 
 	return (
-		
-			<FontAwesomeIcon
-				icon={icon}
-				style={{ color }}
-				size={size}
-				className={className}
-			/>
-		
+		<FontAwesomeIcon
+			icon={icon}
+			style={{ color }}
+			size={size}
+			className={className}
+		/>
 	);
 };
