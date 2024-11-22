@@ -1,7 +1,7 @@
 import { hackerNewsTools, productHuntTools } from "@snowpilot/toolcool";
 import ReactMarkdown from "react-markdown";
 import { LoadingDots } from "~/components/loading-dots";
-import type { MessageType } from "~/lib/types";
+import type { ChatCompletionMessage } from "~/lib/types";
 import { BrandIcon } from "./brand-icon";
 
 export const LoadingMessage = () => {
@@ -39,7 +39,7 @@ const MessageBubble = ({
 export const Message = ({
 	message,
 	loading,
-}: { message: MessageType; loading: boolean }) => {
+}: { message: ChatCompletionMessage; loading: boolean }) => {
 	if (message.role === "tool") {
 		return <></>;
 	}
