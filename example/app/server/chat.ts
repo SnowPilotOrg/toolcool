@@ -49,7 +49,7 @@ export const toolChat = createServerFn({
 		}
 	});
 
-export const ToolCall = createServerFn({
+export const callTool = createServerFn({
 	method: "POST",
 })
 	.validator(

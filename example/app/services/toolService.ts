@@ -1,38 +1,47 @@
-import type { MessageType } from '~/lib/types';
-import { ToolCall } from '~/server/chat';
-import type { ToolCallType } from '~/lib/types';
+import type { MessageType } from "~/lib/types";
+import { callTool } from "~/server/chat";
+import type { ToolCall } from "~/lib/types";
 
 export type ToolExecutionResult = {
-  success: MessageType[];
-  errors: string[];
+	success: MessageType[];
+	errors: string[];
 };
 
 export const toolService = {
-  async executeToolCalls(toolCalls: ToolCallType[]): Promise<ToolExecutionResult> {
-    const results: ToolExecutionResult = {
-      success: [],
-      errors: []
-    };
+	async executeToolCalls(toolCalls: ToolCall[]): Promise<ToolExecutionResult> {
+		const results: ToolExecutionResult = {
+			success: [],
+			errors: [],
+		};
 
-    for (const toolCall of toolCalls) {
-      try {
-        const result = await ToolCall({
-          data: { tool_call: toolCall }
-        });
+		const promises = toolCalls.map(async (toolCall) => {
+			try {
+				const result = await callTool({
+					data: { tool_call: toolCall },
+				});
 
-        if ('error' in result) {
-          results.errors.push(`${toolCall.function.name}: ${result.error.message}`);
-          continue;
-        }
+				if (
+					"error" in result &&
+					result.error &&
+					typeof result.error === "object" &&
+					"message" in result.error
+				) {
+					results.errors.push(
+						`${toolCall.function.name}: ${result.error.message}`,
+					);
+					return;
+				}
 
-        results.success.push(result as MessageType);
-      } catch (err) {
-        results.errors.push(
-          `${toolCall.function.name}: ${err instanceof Error ? err.message : 'Failed'}`
-        );
-      }
-    }
+				results.success.push(result as MessageType);
+			} catch (err) {
+				results.errors.push(
+					`${toolCall.function.name}: ${err instanceof Error ? err.message : "Failed"}`,
+				);
+			}
+		});
 
-    return results;
-  }
-}; 
+		await Promise.all(promises);
+
+		return results;
+	},
+};

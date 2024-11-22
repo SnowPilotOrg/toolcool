@@ -10,6 +10,8 @@ export const toolCallSchema = z.object({
 	id: z.string(),
 });
 
+export type ToolCall = z.infer<typeof toolCallSchema>;
+
 export const openAiMessageSchema = z.object({
 	role: z.enum(["system", "user", "assistant", "tool"]),
 	content: z.string().nullable().optional(),
@@ -30,3 +32,9 @@ export const openAiMessageSchema = z.object({
 export type MessageType = z.infer<typeof openAiMessageSchema>;
 
 export const openAiMessagesSchema = z.array(openAiMessageSchema);
+
+export type ErrorResponse = {
+	error: {
+		message: string;
+	};
+};
