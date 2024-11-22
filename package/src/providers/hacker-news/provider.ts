@@ -55,7 +55,40 @@ const getTopStoriesTool: Tool = {
 	},
 };
 
+// Users
+
+// TODO: Best way to structure this for larger tools?
+// TODO: Do optional fields make sense for an output schema?
+const userSchema = z.object({
+	id: z.string().describe("The id of the user"),
+	created: z.number().describe("The time the user was created"),
+	karma: z.number().describe("The karma of the user"),
+	about: z.string().describe("The about text of the user").optional(),
+	submitted: z.array(z.number()).describe("The ids of the stories the user has submitted").optional(),
+});
+
+// TODO: HACK
+const getUserInput = z.object({
+	id: z.string().describe("The id of the user"),
+}).describe("Input for the getUser tool");
+
+const getUserOutput = userSchema;
+
+const getUserTool: Tool = {
+	name: "getUser",
+	description: "Get a user from Hacker News",
+	inputSchema: getUserInput,
+	outputSchema: getUserOutput,
+	fn: async (args) => {
+		const response = await fetch(
+			`https://hacker-news.firebaseio.com/v0/user/${args.id}.json`,
+		);
+		const body = await response.json();
+		return userSchema.parse(body);
+	},
+};
+
 export const hackerNewsProvider: ToolProvider = {
 	name: "hacker-news",
-	tools: [getTopStoriesTool],
+	tools: [getTopStoriesTool, getUserTool],
 };
