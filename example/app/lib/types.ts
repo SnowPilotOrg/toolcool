@@ -11,6 +11,7 @@ export const ToolCall = z.object({
 
 export type ToolCall = z.infer<typeof ToolCall>;
 
+// @warrenbhw: Can we get the format from openai instead?
 export const ChatCompletionMessage = z.discriminatedUnion("role", [
 	z.object({
 		role: z.literal("tool"),

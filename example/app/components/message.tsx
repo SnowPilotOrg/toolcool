@@ -43,7 +43,7 @@ export const Message = ({
 	if (message.role === "tool") {
 		return <></>;
 	}
-	if (message.tool_calls) {
+	if (message.role === "assistant" && message.tool_calls) {
 		return (
 			<>
 				{message.tool_calls.map((tool_call, index) => (
