@@ -1,10 +1,10 @@
 import { hackerNewsTools, productHuntTools } from "@snowpilot/toolcool";
-import type { ToolCallType } from "~/lib/types";
+import type { ToolCall } from "~/lib/types";
 import { BrandIcon } from "../brand-icon";
 import { MessageBubble } from "./MessageBubble";
 
 type ToolCallMessageProps = {
-	toolCall: ToolCallType;
+	toolCall: ToolCall;
 	loading: boolean;
 };
 
