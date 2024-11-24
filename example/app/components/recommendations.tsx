@@ -13,9 +13,9 @@ export const Recommendations = ({
 			},
 			{
 				brand: ["product-hunt", "hacker-news"],
-				text: "Trending Topics",
+				text: "Trending Discussions",
 				prompt:
-					"What are the top trending topics? Check both Hacker News and Product Hunt",
+					"What are the top trending discussions? Check recent posts from both Hacker News and Product Hunt",
 			},
 			{
 				brand: ["hacker-news"],
