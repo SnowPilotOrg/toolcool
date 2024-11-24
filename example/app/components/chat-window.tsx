@@ -13,8 +13,9 @@ import { toolService } from "~/services/toolService";
 import { ChatErrorBoundary } from "./chat-error-boundary";
 import { Placeholder } from "./placeholder";
 import { Recommendations } from "./recommendations";
+import { cn } from "~/lib/utils";
 
-export const ChatWindow = () => {
+export const ChatWindow = ({ className }: { className?: string }) => {
 	const {
 		messages,
 		isLoading,
@@ -125,7 +126,7 @@ export const ChatWindow = () => {
 	};
 
 	return (
-		<Card className="relative flex h-[600px] max-h-screen w-full max-w-2xl flex-col">
+		<Card className={cn("flex size-full flex-col", className)}>
 			{messages.length > 0 && (
 				<Button
 					isIconOnly
