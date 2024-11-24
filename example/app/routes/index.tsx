@@ -25,7 +25,7 @@ return chatCompletion.choices[0].message;`;
 function Home() {
 	return (
 		<Background className="flex size-full items-center justify-center">
-			<div className="flex size-full max-w-2xl flex-col items-center gap-4 py-2">
+			<div className="flex size-full max-w-3xl flex-col items-center gap-4 py-2">
 				<div className="flex w-full shrink-0 justify-between gap-2">
 					<div className="flex flex-col gap-2">
 						<h1 className="font-bold text-2xl">Toolcool</h1>
