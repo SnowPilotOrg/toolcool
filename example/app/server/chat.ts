@@ -27,6 +27,7 @@ export const toolChat = createServerFn({
 				model: "gpt-4o-mini",
 				tools: toOpenAIFormat(tools),
 				tool_choice: "auto",
+				temperature: 0.15,
 				n: 1,
 			});
 
